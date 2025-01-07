@@ -1,0 +1,82 @@
+---
+title: "Future Plans and Ideas for EJAM"
+description: "6. Future Plans and Ideas for EJAM"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Future Plans and Ideas for EJAM}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r developernote, eval=FALSE, echo= FALSE, include = FALSE}
+#  *>>>>>>>>>> Developer note: vignettes need to be tested/edited/rebuilt regularly <<<<<<<<<<<*
+#    - **See ?pkgdown::build_site** and script in EJAM/data-raw/- EJAM uses the pkgdown R package to build help and articles/ vignettes as web pages
+
+
+# THIS ARTICLE 
+#    IS NOT READY TO BE USED
+
+
+```
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Status and Plans as of 2025
+
+## Known Issues and Bug Fixes
+
+Any new or known issues such as bugs or feature requests are tracked as github issues and fixes are made in the development branch on a rolling basis.
+
+## Public Access via EJScreen
+
+[EJScreen](https://www.epa.gov/ejscreen "https://www.epa.gov/ejscreen"){.uri target="_blank" rel="noreferrer noopener"} has been able to leverage EJAM's technology to provide public access to batches of reports, allowing rapid multisite analysis through EJScreen's Multisite Tool. The tool attempts to balance user-friendliness of the visual interface and features, relevance to what the public finds useful, and resources that include appropriate documentation and user support.
+
+## Public Access to Open Source Software/Data
+
+In accordance with the Office of Management and Budget's (OMB's) Federal Source Code Policy, EPA circa 12/2024 provided public access to open source code and data that constitute EJAM. For an open source release, see the instructions on installing the EJAM R package, at [EJAM package documentation site](https://usepa.github.io/EJAM/index.html).
+
+## Possible future enhancements
+
+EPA will continue to consider what works and what is still needed in a multisite tool such as EJAM, including some of the ideas and plans listed below.
+
+
+### Counts of nearby points of interest
+
+A feature is planned that will be able to report on the number of user-specified points of interest (e.g., schools) at each location. For example, it could report on how many schools are at each analyzed location. This would report on counts in an analysis of circular buffers (e.g., \# of schools near each facility analyzed), but also for FIPS Census units (e.g., \# of schools in each County) or polygons/shapefiles (e.g., \# of schools in each high-risk zone).
+
+### Facility Density Scores for all EPA-regulated Facilities
+
+A facility density indicator may be explored and pre-calculated, that would summarize the proximity of all types of EPA-regulated facilities, or certain subcategories, for every community in the US or within one State of interest. This would be similar to the existing proximity indicators such as the RMP score in EJScreen, but cover a larger range of facilities.
+
+### Proximity Scores for User-Specified Sites
+
+A feature is planned that will be able to quickly calculate a new proximity indicator for every block group in the US, to represent counts of and distances to user-specified points such as facilities. This would be similar to the existing proximity indicators such as the RMP score in EJScreen, but would be calculated on the fly for any user-specified set of points.
+
+### Written Report
+
+EJAM is designed in a way that will allow a future update to provide a default, standard written report (e.g., such as a 10-page report). EJAM will provide a written report with text, graphics, and maps, ready for a user to print, download, share, and use. Because the report is a Word document, one can further edit it offline as needed. Users also can choose to use just selected tables or graphics or data files (such as for individual sites and summary statistics).
+
+### Methods for Identifying and Focusing on Key Findings
+
+Communicating key findings is challenging when such a large number of metrics are available across multiple locations with multiple demographic groups. Some simple tools may be able to help with initial filtering of results, to suggest what might be highlighted. These will be explored for the written report, particularly for ways to provide an Executive Summary.
+
+### Visualization Tools
+
+A variety of plots and maps will be explored as ways to communicate the rich data results calculated by EJAM. For example, EJAM R functions can calculate and display detailed estimates of the range of residential distances to facilities within each demographic subgroup - this type of visualization could be incorporated into the web app if there appears to be interest in it. Another possibility is that plots, maps, and tables could be made to interact in sync with each other, where that supports useful data exploration.
+
+### User-specified Indicators
+
+EJAM in the future will also be able to analyze, aggregate, and report on other demographic indicators (e.g., other Census ACS variables), to include user-selected EPA-hosted layers, or even user-provided data. In other words, an analysis would be able to include other layers on risks or concentrations (at block group resolution), or user-provided scores for each block group.
+
+### API
+
+To provide further flexibility and help avoid duplication of effort, an EJAM API is anticipated, and will provide access to services such as fast identification of nearby blocks or other points, summarization (aggregation over blocks or block groups), or data.
+
+### Spatial Resolution
+
+EJAM is designed with growth in mind, assuming that the specific indicators of interest will expand or change over time. It is even possible that multiple resolutions of data will need to be analyzed, such as block, block group, and tract data for different indicators. A subsequent refinement might even use a high-resolution raster grid of population estimates rather than the Census Block counts currently used for buffering and weighting block group scores for partially included block groups.
