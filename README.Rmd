@@ -51,17 +51,17 @@ EJScreen's Environmental Justice Analysis Multisite Tool (EJAM) is a resource pr
 
 ### What is EJAM?
 
--   [What is EJAM?](articles/0_whatis.html)
+-   [What is EJAM?](https://usepa.github.io/EJAM/articles/0_whatis.html)
 
 ### EJAM as a Web Application
 
-[EJAM can be used as a web app](articles/0_webapp.html), providing a simple user interface that lets anyone quickly see the results of a basic analysis.
+[EJAM can be used as a web app](https://usepa.github.io/EJAM/articles/0_webapp.html), providing a simple user interface that lets anyone quickly see the results of a basic analysis.
 
 ### EJAM as a Software Toolkit (and Local Web App) for Analysts and Developers
 
 EJAM is also available to analysts and developers as an R Package written in the [R programming language](https://www.r-project.org/), with source code on GitHub. When used in RStudio, the EJAM package provides functions to help analysts work with block group data, points, and polygons, to very quickly aggregate and compare large numbers of locations.
 
-Again, installing the R package also allows one to use [EJAM as a local web app](articles/0_webapp.html) if the shiny app is launched locally on a user's own computer.
+Again, installing the R package also allows one to use [EJAM as a local web app](https://usepa.github.io/EJAM/articles/0_webapp.html) if the shiny app is launched locally on a user's own computer.
 
 More information about the EJAM R package:
 
