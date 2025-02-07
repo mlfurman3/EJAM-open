@@ -36,7 +36,7 @@ create_filename <- function(file_desc = '', title = '',
     fname <- paste(fname, gsub(' ', sep, title), sep = sep)
   }
   ## add buffer distance, if applicable
-  if (!is.null(buffer_dist) && !is.na(buffer_dist) && buffer_dist > 0 ) {
+  if (!is.null(buffer_dist) && !is.na(buffer_dist) && buffer_dist > 0  && !isTRUE(getOption("shiny.testmode"))) {
     fname <- paste(fname, buffer_dist, 'Miles_from', sep = sep)
   }
   ## add site selection method

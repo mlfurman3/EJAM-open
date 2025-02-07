@@ -1,6 +1,6 @@
 Package: EJAM
 Title: EJAM Environmental Justice Analysis Multisite tool
-Version: 2.32.0
+Version: 2.32.1
 Author: Mark Corrales <corrales.mark@epa.gov>
 Maintainer: Mark Corrales <corrales.mark@epa.gov>
 License: MIT + file LICENSE.md
@@ -14,7 +14,7 @@ Description: Web app and R tools to easily summarize
     EJScreen indicators are included.
 URL: https://usepa.github.io/EJAM, https://github.com/USEPA/EJAM
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5)
 Imports:
     arrow,
     attempt,
@@ -48,7 +48,10 @@ Imports:
     RMySQL,
     SearchTrees,
     shinydisconnect,
+    mapview,
+    leaflet.extras,
     sf,
+    leaflet,
     shiny (>= 1.7.2),
     shinycssloaders,
     shinyjs,
@@ -73,6 +76,7 @@ Suggests:
     rvest,
     terra,
     tidygeocoder,
+    tigris,
     units
 Remotes:
     mikejohnson51/AOI

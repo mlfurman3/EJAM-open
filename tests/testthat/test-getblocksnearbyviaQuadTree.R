@@ -4,12 +4,13 @@
 # adjusted distance is always less than unadjusted,
 # except when they both are 0.
 
-set.seed(999)
-samp <- sample(1:NROW(blockpoints), 1000)
-pts <- data.frame(lat = blockpoints$lat[samp],
-                  lon = blockpoints$lon[samp])
 
 testthat::test_that("distance gets adjusted up if radius zero", {
+  
+  set.seed(999)
+  samp <- sample(1:NROW(blockpoints), 1000)
+  pts <- data.frame(lat = blockpoints$lat[samp],
+                    lon = blockpoints$lon[samp])
   # zero radius so distance always has to get adjusted
   radius <- 0
   x <- getblocksnearbyviaQuadTree(sitepoints = pts, radius = radius,

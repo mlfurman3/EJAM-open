@@ -4,10 +4,15 @@
 \alias{fill_tbl_full_ej}
 \title{Create full EJ + EJ supp index HTML table of indicator rows}
 \usage{
-fill_tbl_full_ej(output_df)
+fill_tbl_full_ej(
+  output_df,
+  title = "EJScreen environmental and socioeconomic indicators data"
+)
 }
 \arguments{
 \item{output_df, }{single row of results table from doaggregate - either results_overall or one row of bysite}
+
+\item{title}{Text of overall title of report table}
 }
 \description{
 Create full EJ + EJ supp index HTML table of indicator rows

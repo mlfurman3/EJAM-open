@@ -34,7 +34,7 @@
 #'
 test_interactively = function(ask = TRUE, 
                               noquestions = TRUE, # just for shapefile folder selections
-                              useloadall = TRUE,
+                              useloadall = TRUE, # might be essential actually
                               
                               y_basic = FALSE, y_latlon=TRUE, y_shp=TRUE, y_fips = TRUE,
                               
@@ -153,7 +153,9 @@ test_interactively = function(ask = TRUE,
           "test-getblocks_summarize_blocks_per_site.R",  
           "test-getblocksnearby.R",        
           "test-getblocksnearby_from_fips.R", 
-          "test-getblocksnearbyviaQuadTree.R"    #    -------------- NEEDS MORE TESTS ***
+          "test-getblocksnearbyviaQuadTree.R",
+          "test-report_residents_within_xyz.R"
+          #    -------------- NEEDS MORE TESTS ***
         ),
         test_fixcolnames = c(
           "test-fixcolnames.R",
@@ -190,18 +192,172 @@ test_interactively = function(ask = TRUE,
         test_app = c(
           #"test-report_residents_within_xyz.R",  # maybe belongs in a separate group about reports/tables?
           "test-ui_and_server.R",
-          "test-FIPS-shiny-functionality.R", "test-latlon-shiny-functionality.R", "test-NAICS-shiny-functionality.R", "test-shapefile-shiny-functionality.R"
+          "test-FIPS-functionality.R", "test-latlon-functionality.R", "test-NAICS-functionality.R", "test-shp1-functionality.R","test-shp2-functionality.R"
         ),
         test_test = c(
-          "test-test.R"#, #   fast way to check this script via  biglist <- test_interactively(ask = FALSE, y_runsome = T, tname = 'test')
-          #"test-test2.R",  #   fast way to check this script
-          #"test-test.R"
+          # "test-test.R", #   fast way to check this script via  biglist <- test_interactively(ask = FALSE, y_runsome = T, tname = 'test')
+          "test-test2.R",  #   fast way to check this script
+          "test-test1.R"
         ),
         test_golem = c(
           "test-golem_utils_server.R", # not used
           "test-golem_utils_ui.R"      # not used
         )
       )
+      
+      # Seconds to run each testfile or group ####
+      
+      timebyfile <- structure(
+        list(
+          file = c(
+            "test-latlon_df_clean.R", "test-latlon_from_anything.R", 
+            "test-latlon_from_vectorofcsvpairs.R", "test-address_xyz.R", 
+            "test-latlon_as.numeric.R", "test-latlon_from_address.R", "test-latlon_from_sic.R", 
+            "test-latlon_infer.R", "test-latlon_is.valid.R", "test-state_from_sitetable.R", 
+            "test-utils_metadata_add.R", "test-fixcolnames.R", "test-fixnames_to_type.R", 
+            "test-varinfo.R", "test-fixcolnames_infer.R", "test-fixnames.R", 
+            "test-ejscreenRESTbroker-functions.R", "test-ejscreenapi.R", 
+            "test-ejscreenapi1.R", "test-ejscreenapi_plus.R", "test-ejscreenit.R", 
+            "test-naics2children.R", "test-naics_categories.R", "test-naics_findwebscrape.R", 
+            "test-naics_from_code.R", "test-naics_from_name.R", "test-naics_subcodes_from_code.R", 
+            "test-naics_validation.R", "test-naics_from_any.R", "test-FIPS_FUNCTIONS.R", 
+            "test-is.numeric.text.R", "test-state_from_latlon.R", "test-state_from_fips_bybg.R", 
+            "test-MAP_FUNCTIONS.R", "test-FIPS-shiny-functionality.R", "test-NAICS-shiny-functionality.R", 
+            "test-latlon-shiny-functionality.R", "test-shapefile-shiny-functionality.R", 
+            "test-ui_and_server.R", "test-doaggregate.R", "test-pctile_from_raw_lookup.R", 
+            "test-ejamit_sitetype_from_output.R", "test-ejam2barplot_sites.R", 
+            "test-ejamit.R", "test-ejamit_compare_distances.R", "test-ejamit_compare_types_of_places.R", 
+            "test-ejamit_sitetype_from_input.R", "test-getblocks_summarize_blocks_per_site.R", 
+            "test-report_residents_within_xyz.R", "test-getblocksnearby.R", 
+            "test-getblocksnearby_from_fips.R", "test-getblocksnearbyviaQuadTree.R", 
+            "test-radius_inferred.R", "test-shapefile_xyz.R", "test-ejam2shapefile.R", 
+            "test-shape2zip.R", "test-shapes_from_fips.R", "test-frs_from_naics.R", 
+            "test-frs_from_programid.R", "test-frs_from_regid.R", "test-frs_from_sic.R", 
+            "test-frs_is_valid.R", "test-regid_from_naics.R", "test-golem_utils_server.R", 
+            "test-mod_save_report.R", "test-mod_specify_sites.R", "test-mod_view_results.R", 
+            "test-test1.R", "test-test2.R"), 
+          seconds_byfile = c(
+            4.53999999999996, 
+            2.58999999999924, 2.72999999999956, 6.10000000000036, 2.36000000000058, 
+            4.5600000000004, 2.44000000000051, 2.53999999999996, 2.36999999999989, 
+            7.13999999999942, 2.48000000000047, 2.39999999999964, 2.15999999999985, 
+            2.21000000000004, 2.5, 2.38000000000011, 67.4399999999996, 6.57999999999993, 
+            7.82999999999993, 14.2999999999993, 12.9099999999999, 2.5, 2.34999999999945, 
+            7.80000000000018, 2.39999999999964, 2.50999999999931, 2.5, 2.43000000000029, 
+            3.03999999999996, 31.54, 2.59000000000015, 17.5900000000001, 
+            2.30000000000018, 20.1199999999999, 2.17000000000007, 2.25, 2.19999999999982, 
+            2.31999999999971, 2.72000000000025, 42.25, 2.55000000000018, 
+            10.9899999999998, 23.3200000000006, 31.4700000000003, 71.0799999999999, 
+            13.0899999999992, 2.25, 4.40999999999985, 2.18000000000029, 8.83999999999924, 
+            5.84000000000015, 7.72000000000025, 18.3400000000001, 6.96000000000004, 
+            3.90999999999985, 3.36999999999989, 4.53000000000065, 30.0600000000004, 
+            2.42000000000007, 2.5, 6.73999999999978, 2.64000000000033, 9.63000000000011, 
+            2.35999999999876, 2.28999999999996, 2.22000000000025, 2.26000000000022, 
+            2.19999999999891, 2.23999999999978)), 
+        class = "data.frame", 
+        row.names = c(NA, -69L))
+      
+      # timebygroup
+      #            testgroup seconds_bygroup
+      #               <char>           <num>
+      #  1:      test_latlon              70
+      #  2: test_fixcolnames              33
+      #  3: test_ejscreenapi  ***        123
+      #  4:       test_naics              52
+      #  5:        test_fips              68
+      #  6:        test_maps              22
+      #  7:         test_app              29
+      #  8:        test_doag              50
+      #  9:      test_ejamit  ***        169
+      # 10:   test_getblocks              64
+      # 11:       test_shape              30shap
+      # 12:         test_frs              72
+      # 13:       test_golem              11
+      # 14:         test_mod              16
+      # 15:        test_test              11
+      
+      timebygroup = structure(list(
+        testgroup = c("test_latlon", "test_fixcolnames", "test_ejscreenapi", "test_naics", "test_fips", "test_maps", "test_app", 
+                      "test_doag", "test_ejamit", "test_getblocks", "test_shape", "test_frs", "test_golem", "test_mod", "test_test"), 
+        seconds_bygroup = c(70, 33, 123, 52, 68, 22, 29, 50, 169, 64, 30, 72, 11, 16, 11)
+      ),
+      row.names = c(NA, -15L), class = c("data.table", "data.frame")
+      )
+      
+      # data.table(timebyfile)
+      #                                           file seconds_byfile
+      #                                         <char>          <num>
+      #  1:                     test-latlon_df_clean.R           4.54
+      #  2:                test-latlon_from_anything.R           2.59
+      #  3:        test-latlon_from_vectorofcsvpairs.R           2.73
+      #  4:                         test-address_xyz.R           6.10
+      #  5:                   test-latlon_as.numeric.R           2.36
+      #  6:                 test-latlon_from_address.R           4.56
+      #  7:                     test-latlon_from_sic.R           2.44
+      #  8:                        test-latlon_infer.R           2.54
+      #  9:                     test-latlon_is.valid.R           2.37
+      # 10:                test-state_from_sitetable.R           7.14
+      # 11:                  test-utils_metadata_add.R           2.48
+      # 12:                         test-fixcolnames.R           2.40
+      # 13:                    test-fixnames_to_type.R           2.16
+      # 14:                             test-varinfo.R           2.21
+      # 15:                   test-fixcolnames_infer.R           2.50
+      # 16:                            test-fixnames.R           2.38
+      # 17:        test-ejscreenRESTbroker-functions.R          67.44
+      # 18:                         test-ejscreenapi.R           6.58
+      # 19:                        test-ejscreenapi1.R           7.83
+      # 20:                    test-ejscreenapi_plus.R          14.30
+      # 21:                          test-ejscreenit.R          12.91
+      # 22:                      test-naics2children.R           2.50
+      # 23:                    test-naics_categories.R           2.35
+      # 24:                 test-naics_findwebscrape.R           7.80
+      # 25:                     test-naics_from_code.R           2.40
+      # 26:                     test-naics_from_name.R           2.51
+      # 27:            test-naics_subcodes_from_code.R           2.50
+      # 28:                    test-naics_validation.R           2.43
+      # 29:                      test-naics_from_any.R           3.04
+      # 30:                      test-FIPS_FUNCTIONS.R          31.54
+      # 31:                     test-is.numeric.text.R           2.59
+      # 32:                   test-state_from_latlon.R          17.59
+      # 33:                test-state_from_fips_bybg.R           2.30
+      # 34:                       test-MAP_FUNCTIONS.R          20.12
+      # 35:            test-FIPS-shiny-functionality.R           2.17
+      # 36:           test-NAICS-shiny-functionality.R           2.25
+      # 37:          test-latlon-shiny-functionality.R           2.20
+      # 38:       test-shapefile-shiny-functionality.R           2.32
+      # 39:                       test-ui_and_server.R           2.72
+      # 40:                         test-doaggregate.R          42.25
+      # 41:              test-pctile_from_raw_lookup.R           2.55
+      # 42:         test-ejamit_sitetype_from_output.R          10.99
+      # 43:                  test-ejam2barplot_sites.R          23.32
+      # 44:                              test-ejamit.R          31.47
+      # 45:            test-ejamit_compare_distances.R          71.08
+      # 46:      test-ejamit_compare_types_of_places.R          13.09
+      # 47:          test-ejamit_sitetype_from_input.R           2.25
+      # 48: test-getblocks_summarize_blocks_per_site.R           4.41
+      # 49:         test-report_residents_within_xyz.R           2.18
+      # 50:                     test-getblocksnearby.R           8.84
+      # 51:           test-getblocksnearby_from_fips.R           5.84
+      # 52:          test-getblocksnearbyviaQuadTree.R           7.72
+      # 53:                     test-radius_inferred.R          18.34
+      # 54:                       test-shapefile_xyz.R           6.96
+      # 55:                      test-ejam2shapefile.R           3.91
+      # 56:                           test-shape2zip.R           3.37
+      # 57:                    test-shapes_from_fips.R           4.53
+      # 58:                      test-frs_from_naics.R          30.06
+      # 59:                  test-frs_from_programid.R           2.42
+      # 60:                      test-frs_from_regid.R           2.50
+      # 61:                        test-frs_from_sic.R           6.74
+      # 62:                        test-frs_is_valid.R           2.64
+      # 63:                    test-regid_from_naics.R           9.63
+      # 64:                  test-golem_utils_server.R           2.36
+      # 65:                     test-mod_save_report.R           2.29
+      # 66:                   test-mod_specify_sites.R           2.22
+      # 67:                    test-mod_view_results.R           2.26
+      # 68:                               test-test1.R           2.20
+      # 69:                               test-test2.R           2.24
+      #                                           file seconds_byfile
+      
       ########################################## # 
       # groupnames <- names(testlist)
       test_all <- as.vector(unlist(testlist))
@@ -240,7 +396,7 @@ test_interactively = function(ask = TRUE,
     } # end if, update_list_of_tests
     
     
-    cat("\n\nAVAILABLE UNIT TEST FILES, IN GROUPS:\n\n")
+    # cat("\n\nAVAILABLE UNIT TEST FILES, IN GROUPS:\n\n")
     
     
     ## count of test per group ####
@@ -250,7 +406,7 @@ test_interactively = function(ask = TRUE,
                                                #, `filenames as test-___.R` = as.vector(unlist(lapply(testlist, function(z) paste0(gsub("^test-|.R$", "", unlist(z)), collapse = ", "))))
     )
     rownames(count_available_files_bygroup) = NULL
-    print(testlist) # long list of vectors
+    # print(testlist) # long list of vectors
     
     cat("\n   COUNTS OF AVAILABLE FILES IN EACH GROUP OF TESTS\n\n")
     print(count_available_files_bygroup)
@@ -285,7 +441,6 @@ test_interactively = function(ask = TRUE,
       # x2 = test1group(c("test-test1.R", "test-test2.R"), groupname = 'test', print4group = TRUE)
       # print(x1)
       # print(x2)
-
       
       test1group <- function(fnames = test_all, groupname = "",
                              reporter = "minimal", # some of the code below now only works if using this setting
@@ -318,6 +473,11 @@ test_interactively = function(ask = TRUE,
               , print = print4eachfile) # here it is a useless param of capture_output_lines()
             }))
             
+            ## old categorization
+            # total = err_cant_test + tests.  tests =  passed or flag. flag = warning OR err. err = (skipped OR failed).
+            # better categories:
+            # total = untested_cant + untested_skipped + tested. tested = passed + warned + failed. flagged = untested_cant + untested_skipped + warned + failed. err=0.
+            
             x <- as.data.frame(x)
             x$tests <- x$nb
             x$nb <- NULL
@@ -326,10 +486,27 @@ test_interactively = function(ask = TRUE,
             x$error_cant_test <- ifelse(x$error > 0, 1, 0)  ## a problem with counting this?
             x$error <- NULL
             x$skipped <- ifelse(x$skipped, 1, 0)
-            x <- x[, c('file',  'test', 
-                       'tests', 'passed', 'failed',  'err',
-                       'warning', 'flag', 'skipped', 'error_cant_test'
+            
+            x$err = NULL
+            x$untested_skipped <- x$skipped; x$skipped = NULL
+            x$untested_cant <- x$error_cant_test;  x$error_cant_test = NULL
+            x$tested = x$tests - x$untested_skipped; x$tests = NULL
+            x$total = x$untested_skipped + x$untested_cant + x$tested
+            x$warned = x$warning; x$warning = NULL
+            x$failed = x$tested - x$passed - x$warned
+            x$flagged = x$untested_skipped + x$untested_cant + x$warned + x$failed; x$flag = NULL
+            if (sum(x$total) != sum(x$passed + x$flagged)) {stop('math error in counts!')}
+            
+            x <- x[, c('file',  'test',
+                       'total', 'passed', 'flagged', 
+                       'untested_cant', 'untested_skipped', 'warned', 'failed'
             )]
+            
+            # x <- x[, c('file',  'test', 
+            #            'tests', 'passed', 'failed',  'err',
+            #            'warning', 'flag', 'skipped', 'error_cant_test'
+            # )]
+            
             x$test <- substr(x$test, 1, 50) # some are long
             xtable[[i]] <- data.table::data.table(x)
           })
@@ -349,9 +526,8 @@ test_interactively = function(ask = TRUE,
         if (print4group) {
           # print a table of counts
           print(c(
-            colSums(xtable[, .(tests, passed, failed, err,
-                               warning, flag, 
-                               skipped, error_cant_test)]),
+            colSums(xtable[, .(total, passed, flagged, 
+                               untested_cant, untested_skipped, warned, failed)]),
             seconds_bygroup = seconds_bygroup
           ))
         }
@@ -441,30 +617,30 @@ test_interactively = function(ask = TRUE,
           
           ## Show table of counts for this group of files of tests:
           print(c(
-            colSums(xtable[[i]][, .(tests, passed, failed, err,
-                                    warning, flag,
-                                    skipped, error_cant_test)]),
+            colSums(xtable[[i]][, .(total, passed, flagged, 
+                                    untested_cant, untested_skipped, warned, failed)]),
             seconds = secs
+            
           ))
           
-          if (sum(xtable[[i]]$flag) > 0) {
+          if (sum(xtable[[i]]$flagged) > 0) {
             # using beepr::beep() since utils::alarm() may not work
             # using :: might create a dependency but prefer that pkg be only in Suggests in DESCRIPTION
             if (interactive()) {beepr::beep(10)}
-            cat("\n NOT ALL PASSED IN", tgroupname, "\n\n")
+            cat("\n SOME UNTESTED OR WARNED OR FAILED IN", tgroupname, "\n\n")
           }
           
-        } # finished this one group of test files
+        } # looped over groups of test files
         
         xtable <- data.table::rbindlist(xtable)
         time_minutes <-   round(sum(xtable[ , (seconds_bygroup[1]) / 60, by = testgroup][, V1]) , 1)
         cat(paste0('\n', time_minutes[1], ' minutes total for all groups\n\n'))
         
-        xtable[ , flag_byfile := sum(flag), by = "file"]
-        xtable[ , err_byfile  := sum(err),  by = "file"]
-        xtable[ , flag_bygroup := sum(flag), by = "testgroup"]
-        xtable[ , err_bygroup  := sum(err),  by = "testgroup"]
-        setorder(xtable, -err_bygroup, testgroup, -flag, -failed, file)
+        xtable[ , flagged_byfile := sum(flagged), by = "file"]
+        xtable[ , failed_byfile  := sum(failed),  by = "file"]
+        xtable[ , flagged_bygroup := sum(flagged), by = "testgroup"]
+        xtable[ , failed_bygroup  := sum(failed),  by = "testgroup"]
+        setorder(xtable, -failed_bygroup, -flagged_bygroup, testgroup, -failed, -flagged, file)
         setcolorder(xtable, neworder = c('seconds_bygroup', 'seconds_byfile'), after = NCOL(xtable))
         
         return(xtable)
@@ -487,8 +663,11 @@ test_interactively = function(ask = TRUE,
                       rather than testing the installed version)?", default = TRUE)
       }
       if (missing(y_runsome)) {
-        y_runsome = askYesNo("Run ONLY SOME OF THE tests ?", default = FALSE)}
+        if (!missing(tname)) {y_runsome <- TRUE}
+        if ( missing(tname)) {y_runsome = askYesNo("Run ONLY SOME OF THE tests ?", default = FALSE)}
+      }
       if (is.na(y_runsome))  {stop("cancelled")}
+      if (y_runsome) {y_runall =  FALSE}
       if (y_runsome) {
         if (missing(tname)) { 
           tname = rstudioapi::showPrompt(
@@ -531,6 +710,8 @@ test_interactively = function(ask = TRUE,
       }
     }
     mydir <- normalizePath(mydir)
+    if (!missing(tname)) {y_runsome <- TRUE} # you specified some tests to run, so assume you meant to ignore the default y_runsome xxx
+    if (y_runsome) {y_runall =  FALSE}
     if (y_runsome) {
       tname <- unlist(strsplit(gsub(" ", "", tname), ","))
       tname = paste0("test_", tname)
@@ -610,7 +791,7 @@ test_interactively = function(ask = TRUE,
       shp <- shape_buffered_from_shapefile( shapefile_from_sitepoints(testpoints_5[1:2,]), radius.miles = 1)
       # or use test data  shp <- shapefile_from_any()
       shp <- shapefile_from_any(system.file("testdata/shapes/portland_folder_shp/Neighborhoods_regions.shp", package = "EJAM"))[1:3, ]  
-      x <- ejamit( shapefile = shp )  
+      x <- ejamit( shapefile = shp, radius = 0 )  
       names(x)
       ejam2table_tall(x)
       ejam2barplot(x)
@@ -741,6 +922,25 @@ test_interactively = function(ask = TRUE,
   # RUN JUST 1 FILE OR GROUP ####
   
   if (y_runsome) {
+    if (y_runsome) {y_runall =  FALSE}
+    shownlist = partial_testlist
+    shownlist = cbind(testgroup = rep(names(shownlist), sapply(shownlist, length)), file = unlist(shownlist))
+    rownames(shownlist) = NULL
+    cat("\n USING THESE TEST FILES: \n\n")
+    print(shownlist); cat('\n\n')
+    
+    secs1 = sum(timebygroup$seconds_bygroup[timebygroup$testgroup %in% shownlist[, 'testgroup']])
+    mins1 = round(secs1 / 60, 1)
+    cat("Predicted time to run tests is roughly", mins1, "minutes. Very rough estimate of ETA: ")
+    print(Sys.time() + secs1)
+    cat("\n\n")
+    #
+    # fnames = as.vector(unlist(shownlist))
+    # secs2 = 1.3 * sum(timebyfile$seconds_byfile[timebyfile$file %in% fnames])
+    # mins2 = round(secs2 / 60, 1)
+    # cat("Predicted time to run tests is roughly", mins2, "minutes. Very rough estimate of ETA: ")
+    # print(Sys.time() + secs2)
+    # cat("\n\n")
     
     x <- testbygroup(testlist = partial_testlist)
     bytest <- x
@@ -751,8 +951,8 @@ test_interactively = function(ask = TRUE,
       
       cat("\n\n                            RESULTS THAT FAILED/ WARNED/ CANT RUN     \n\n")
       
-      if (any(x$flag + x$error_cant_test > 0)) {
-        print(x[x$flag + x$error_cant_test > 0,])
+      if (any(x$flagged  > 0)) {
+        print(x[x$flagged  > 0,])
       } else {
         cat("All selected tests ran and passed.")
       }
@@ -760,17 +960,19 @@ test_interactively = function(ask = TRUE,
     })
     ########################### # 
     ## save results of some testing ####
-    
-    if (y_save) {
-      fname <- paste0("results_of_some_unit_testing_", as.character(Sys.Date()), ".rda")
-      fname = (  file.path(mydir, fname) )
-      save(bytest, file = fname)
-      junk = loggable(file = logfilename, x = {
-        
-        cat('\n  See', fname, ' for results of some unit testing.\n\n') 
-      })
-    } # end if - save
-    
+    if (y_seeresults) {
+      # will do save of everything after summarizing results
+    } else {
+      if (y_save) {
+        fname <- paste0("results_of_some_unit_testing_", as.character(Sys.Date()), ".rda")
+        fname = (  file.path(mydir, fname) )
+        save(bytest, file = fname)
+        junk = loggable(file = logfilename, x = {
+          
+          cat('\n  See', fname, ' for results of some unit testing.\n\n') 
+        })
+      } # end if - save
+    }
   }
   ########################### #  ########################################## #
   ########################### #  ########################################## #
@@ -780,6 +982,27 @@ test_interactively = function(ask = TRUE,
   if (y_runall) {
     
     z <- system.time({
+      
+      shownlist = testlist
+      shownlist = cbind(testgroup = rep(names(shownlist), sapply(shownlist, length)), file = unlist(shownlist))
+      rownames(shownlist) = NULL
+      cat("\n USING THESE TEST FILES: \n\n")
+      print(shownlist); cat('\n\n')
+      
+      secs1 = sum(timebygroup$seconds_bygroup[timebygroup$testgroup %in% shownlist[, 'testgroup']])
+      mins1 = round(secs1 / 60, 1)
+      cat("Predicted time to run tests is roughly", mins1, "minutes. Very rough estimate of ETA: ")
+      print(Sys.time() + secs1)
+      cat("\n\n")
+      #
+      # fnames = as.vector(unlist(shownlist))
+      # secs2 = 1.3 * sum(timebyfile$seconds_byfile[timebyfile$file %in% fnames])
+      # mins2 = round(secs2 / 60, 1)
+      # cat("Predicted time to run tests is roughly", mins2, "minutes. Very rough estimate of ETA: ")
+      # print(Sys.time() + secs2)
+      # cat("\n\n")
+      
+      rm(shownlist)
       
       x <- testbygroup(testlist = testlist)
       bytest <- x
@@ -791,8 +1014,8 @@ test_interactively = function(ask = TRUE,
       
       cat("\n\n                            RESULTS THAT FAILED/ WARNED/ CANT RUN     \n\n")
       
-      if (any(x$flag + x$error_cant_test > 0)) {
-        print(x[x$flag + x$error_cant_test > 0,])
+      if (any(x$flagged > 0)) {
+        print(x[x$flagged > 0,])
       } else {
         cat("All selected tests ran and passed.")
       }
@@ -800,21 +1023,24 @@ test_interactively = function(ask = TRUE,
     })
     ########################### # 
     ## save results of all testing ####
-    
-    # y_save = askYesNo("Save results of unit testing?") 
-    if (is.na(y_save)) {stop("cancelled")}
-    if (y_save) {
-      fname <- paste0("results_of_unit_testing_", as.character(Sys.Date()), ".rda")
-      fname = (  file.path(mydir, fname) )
-      save(bytest, file = fname)
-      junk = loggable(file = logfilename, x = {
-        # cat("TEST RESULTS AS OF "); cat(as.character(Sys.Date()))
-        # cat("\n\n")
-        # print(cbind(`PERCENT OF ALL TESTS` = round(100 * colSums(bytest[,4:11]) / 1125, 1)))
-        # cat("\n\n")
-        cat('\n  See', fname, ' for full results of unit testing.\n\n') 
-      })
-    } # end if - save
+    if (y_seeresults) {
+      # will do save of everything after summarizing results
+    } else {
+      # y_save = askYesNo("Save results of unit testing?") 
+      if (is.na(y_save)) {stop("cancelled")}
+      if (y_save) {
+        fname <- paste0("results_of_unit_testing_", as.character(Sys.Date()), ".rda")
+        fname = (  file.path(mydir, fname) )
+        save(bytest, file = fname)
+        junk = loggable(file = logfilename, x = {
+          # cat("TEST RESULTS AS OF "); cat(as.character(Sys.Date()))
+          # cat("\n\n")
+          # print(cbind(`PERCENT OF ALL TESTS` = round(100 * colSums(bytest[,4:11]) / 1125, 1)))
+          # cat("\n\n")
+          cat('\n  See', fname, ' for full results of unit testing.\n\n') 
+        })
+      } # end if - save
+    }
   }
   ########################### #  ########################################## #
   ########################### #  ########################################## #
@@ -832,24 +1058,25 @@ test_interactively = function(ask = TRUE,
       
       cat("\n\n\n")
       cat("COUNT PASS / FAIL \n\n")
-      passcount = colSums(x[, .( err, warning, tests, passed, failed, warning, flag, skipped, error_cant_test)])
+      passcount = colSums(x[, .(total, passed, flagged,   untested_cant, untested_skipped, warned, failed)])
       print(passcount)
       cat("\n")
       cat("PERCENT PASS / FAIL ")
       cat("\n\n")
-      passpercent = round(100 * colSums(x[, .( err, warning, tests, passed, failed, warning, flag, skipped, error_cant_test)])
-                          / sum(x$tests), 1)
+      passpercent = round(100 * colSums(x[, .( total, passed, flagged,   untested_cant, untested_skipped, warned, failed )])
+                          / sum(x$total), 1)
       print(passpercent)
       
-      # about 1.6 % of unit tests have errors   as of 7/1/24   ***********
-      # (and ~1% have warnings)   ***********
+      #
+      #
       ########################### #  ########################### #
       
       ## KEY GROUPS - WHICH TEST GROUPS or FILES HAVE THE MOST FAILING TESTS?
       
-      bygroup <- x[ , .(err = sum(err), warning = sum(warning), flag = sum(flag), 
-                        passed = sum(passed), tests = sum(tests), 
-                        seconds_bygroup = seconds_bygroup[1]), by = "testgroup"]
+      bygroup <- x[ , .(total = sum(total), passed = sum(passed), flagged = sum(flagged),
+                        untested_cant = sum(untested_cant), untested_skipped = sum(untested_skipped), warned = sum(warned), failed = sum(failed), 
+                        seconds_bygroup = seconds_bygroup[1]), 
+                    by = "testgroup"]
       cat("\n\n")
       cat("GROUPS OF FILES")
       cat("\n\n\n")
@@ -859,25 +1086,27 @@ test_interactively = function(ask = TRUE,
       ## WHICH FILES HAVE THE MOST FAILING TESTS?
       
       byfile <- x[ , .(
-        err_byfile = err_byfile[1], 
-        err_bygroup = err_bygroup[1],
+        flagged_byfile = flagged_byfile[1],    #    total, passed, flagged,   untested_cant, untested_skipped, warned, failed
+        flagged_bygroup = flagged_bygroup[1], 
+        failed_byfile = failed_byfile[1],  
+        failed_bygroup = failed_bygroup[1], 
         testgroup = testgroup[1]
       ), 
       by = "file"]
-      setorder(byfile, -err_bygroup, testgroup, -err_byfile, file)
-      setcolorder(byfile, neworder = c("testgroup", "err_bygroup", "file", "err_byfile"))
-      byfile_key <- byfile[err_byfile > 0, ]
+      setorder(byfile, -failed_bygroup, -flagged_bygroup, testgroup, failed_byfile, -flagged_byfile, file) 
+      setcolorder(byfile, neworder = c("testgroup", "failed_bygroup", "flagged_bygroup", "file", "failed_byfile", "flagged_byfile")) 
+      byfile_key <- byfile[flagged_byfile > 0, ] 
       cat("\n\n")
       if (NROW(byfile_key) == 0) {
-        cat("No test files had errors.\n\n")
+        cat("No test files had issues\n\n")
       } else { 
         cat("KEY FILES")
         cat("\n\n")
         print(byfile_key)
         
         topfilenames <- as.data.frame(byfile_key)
-        topfilenames = topfilenames[order(topfilenames$err_byfile, decreasing = TRUE), ]
-        topfilenames = topfilenames$file[topfilenames$err_byfile > 0]
+        topfilenames = topfilenames[order(topfilenames$failed_byfile, topfilenames$flagged_byfile, decreasing = TRUE), ] 
+        topfilenames = topfilenames$file[topfilenames$flagged_byfile > 0]
         if (length(topfilenames) > 0) {
           topfilenames <- topfilenames[1:min(5, length(topfilenames))]
           cat("
@@ -901,8 +1130,8 @@ TO OPEN SOME KEY TEST FILES FOR EDITING, FOR EXAMPLE:
       cat("KEY TESTS")
       cat("\n\n")
       
-      bytest_key = x[order(-x$flag, -x$failed), 1:11]
-      these = bytest_key$tests != bytest_key$passed | bytest_key$error_cant_test > 0
+      bytest_key = x[order(-x$flagged, -x$failed), ]
+      these = bytest_key$flagged > 0
       if (any(these)) {
         bytest_key <- bytest_key[these, ]
         print(bytest_key)
@@ -921,7 +1150,7 @@ TO OPEN SOME KEY TEST FILES FOR EDITING, FOR EXAMPLE:
   
   biglist <- list(
     minutes = totalminutes,
-    passcount = passcount,
+    passcount = passcount,    #      total, passed, flagged,   untested_cant, untested_skipped, warned, failed
     passpercent = passpercent,
     bygroup = bygroup, 
     byfile = byfile,
@@ -931,13 +1160,13 @@ TO OPEN SOME KEY TEST FILES FOR EDITING, FOR EXAMPLE:
     count_available_files_bygroup = count_available_files_bygroup,
     params = params
   )
-  # SAVE results ####
+  # SAVE results + summary ####
   if (y_save) {
     fname <- paste0("results_SUMMARY_of_unit_testing_", as.character(Sys.Date()), ".rda")
     fname = (file.path(mydir, fname))
     save(biglist, file = fname)
     cat(
-      '\n saved ', fname, ' \n\n'
+      '\n Saved', fname, ' \n\n'
     )
   }
   loggable(file = logfilename, x = {
@@ -955,7 +1184,7 @@ TO OPEN SOME KEY TEST FILES FOR EDITING, FOR EXAMPLE:
   
   cat("Finished at", as.character(Sys.time()), '\n')
   
-  if (interactive()) {beepr::beep(10)} # utils::alarm() may not work 
+  if (interactive()) {beepr::beep()} # utils::alarm() may not work 
   invisible(
     biglist
   )
@@ -1027,14 +1256,21 @@ loggable <- function(x, file = 'will be created using timestamp if not provided 
   #   
   #   }) 
   ## use file = logfilename  or file = NULL  to override whatever the y_save value is
-
+  
 }
 ################################### # 
+
 # example of using it ####
-#  biglist <- test_interactively()
+cat('
+
+# example of using it ####
+
+biglist1 <- test_interactively()
+
 ## or
-# mydir = "~/../Downloads/unit testing"
-# biglist <- test_interactively(ask = F, mydir=mydir)
 
+mydir = "~/../Downloads/unit testing"
+biglist2 <- test_interactively(ask = F, mydir = mydir)
 
+')
 ################################### #  ################################### #  ################################### #

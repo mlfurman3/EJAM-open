@@ -1,4 +1,4 @@
-
+ 
 #######  THIS TEST IS SLOW !!!!!!!!!!
 
 testthat::test_that("Estimate of radius, inferred from reported distances from getblocksnearby(), is accurate if radius specified with 2 or 3 decimals", {

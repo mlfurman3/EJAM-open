@@ -170,7 +170,9 @@ app_ui  <- function(request) {
                             fileInput(inputId = 'ss_upload_latlon',
                                       label = 'Upload a file with lat-long coordinates',
                                       multiple = FALSE,
-                                      accept = c('.xls', '.xlsx', ".csv", "text/csv", "text/comma-separated-values,text/plain")
+                                      accept = c('.xls', '.xlsx', '.csv'
+                                                 # "text/csv", "text/comma-separated-values,text/plain") # *** Text files were causing an error
+                                      )
                                       # add hover tips here maybe, or even a button to view examples of valid formats and details on that.
                             ),
                             tags$span(
@@ -226,7 +228,9 @@ app_ui  <- function(request) {
                             fileInput(inputId = 'ss_upload_fips',
                                       label = 'Upload a list of FIPS codes',
                                       multiple = FALSE,
-                                      accept = c('.xls', '.xlsx', ".csv", "text/csv", "text/comma-separated-values,text/plain")
+                                      accept = c('.xls', '.xlsx', ".csv" 
+                                      # "text/csv", "text/comma-separated-values,text/plain") # *** Text files were causing an error
+                                      )
                             ),
                             tags$ul(
                               tags$li('Required filetype: .csv, .xls, or .xlsx'),
@@ -245,7 +249,9 @@ app_ui  <- function(request) {
                             ## input: Upload list of FRS identifiers
                             fileInput(inputId = 'ss_upload_frs',
                                       label = 'Upload a file with FRS identifiers',
-                                      accept = c('.xls', '.xlsx', ".csv", "text/csv", "text/comma-separated-values, text/plain")
+                                      accept = c('.xls', '.xlsx', ".csv" 
+                                                 # "text/csv", "text/comma-separated-values,text/plain") # *** Text files were causing an error
+                                      )
                             ), # xxx
                             tags$span(
                               tags$ul(
@@ -598,14 +604,10 @@ app_ui  <- function(request) {
                                                        
                                                        fluidRow(
                                                          column(4,
-                                                                uiOutput('summ_bar_ind'),
+                                                                uiOutput('summ_bar_ind_out'),
                                                          ),
                                                          column(4,
-                                                                ## input: Barplot setting - data type
-                                                                radioButtons(inputId = 'summ_bar_data', label = 'Data Type',
-                                                                             choiceValues = c('ratio',      'raw'),      # no 'pctile' at this time
-                                                                             choiceNames  = c('Ratio to US','Raw data'), # no 'Percentile of population' at this time
-                                                                             selected = 'ratio'),
+                                                                uiOutput('summ_bar_data'),
                                                          )
                                                        ),
                                                        
@@ -663,7 +665,7 @@ app_ui  <- function(request) {
                                                                 fluidRow(
                                                                   column(6, offset = 3,
                                                                          ## input: indicator dropdown for histogram
-                                                                         uiOutput('summ_hist_ind'),
+                                                                         uiOutput('summ_hist_ind_out'),
                                                                   ) # column with indicator selections
                                                                 ) # row with indicator selections
                                                          ) #end column with hist
@@ -1065,6 +1067,10 @@ app_ui  <- function(request) {
                               min = 1000,  step = 500,
                               value = default_max_pts_upload,
                               max =        maxmax_pts_upload),
+                 numericInput('max_pts_select', label = "Cap on number of points one can SELECT, additional ones in selected table get dropped entirely",
+                              min = 1000,  step = 500,
+                              value = default_max_pts_select,
+                              max =        maxmax_pts_select),
                  numericInput('max_pts_map', label = "Cap on number of points one can MAP",
                               min = 500,  step = 100,
                               value = default_max_pts_map,
@@ -1201,7 +1207,7 @@ app_ui  <- function(request) {
                                      selected = default_include_ejindexes),
                  
                  shiny::radioButtons(inputId = "extra_demog",
-                                     label = "Need extra indicators from EJScreen v2.2 report, on language, age groups, gender, percent with disability, poverty, etc.",
+                                     label = "Need extra indicators, on language, age groups, sex, percent with disability, poverty, etc.",
                                      choices = list(Yes = TRUE, No = FALSE ),
                                      selected = default_extra_demog),
                  
@@ -1266,6 +1272,41 @@ app_ui  <- function(request) {
                  
                  textInput(inputId = "Custom_title_for_bar_plot_of_indicators", label = "Enter title for bar plot of indicators", value = gsub("[^a-zA-Z0-9 ]", "", "") ),
                  
+                 shiny::radioButtons(inputId = "show_ratios_in_report",
+                                     label = "Show ratio to state and ratio to US average in main table of multisite report",
+                                     choices = list(Yes = TRUE, No = FALSE ),
+                                     selected = default_show_ratios_in_report),
+                 
+                 shiny::radioButtons(inputId = "extratable_show_ratios_in_report",
+                                     label = "Show ratio to state and ratio to US average in extra indicators (additional information) table of multisite report",
+                                     choiceNames = list("Yes","No" ),
+                                     choiceValues = list(TRUE, FALSE ),
+                                     selected = default_extratable_show_ratios_in_report),
+                 
+                 # textInput(inputId = "extratable_title", label = "Enter title for table of additional indicators", 
+                 #           value = default_extratable_title
+                 #           # value = gsub("[^a-zA-Z0-9 ]", "", "")
+                 #           ),
+                 
+                 ## add options for what extra or custom indicators to show in report
+                 
+                 # shiny::selectizeInput(),
+                 # 
+                 # extratable_list_of_sections = list(
+                 #   `Breakdown by Race/Ethnicity` = names_d_subgroups,
+                 #   `Language Spoken at Home` = names_d_language,
+                 #   `Language in Limited English Speaking Households` = names_d_languageli,
+                 #   `Breakdown by Sex` = c('pctmale','pctfemale'),
+                 #   `Health` = names_health, 
+                 #   `Community` = names_community[!(names_community %in% c( "pctmale", "pctfemale", "pctownedunits_dupe"))],
+                 #   'Poverty' = names_d_extra, # pctpoor
+                 #   `Site counts and distance` = names_e_other
+                 # )
+                 
+                 # extratable_hide_missing_rows_for = c(names_d_language, names_health)
+                 
+                 
+                 
                  ######################################################## #
                  ## Long report options ####
                  h2("Long report"),
@@ -1318,11 +1359,30 @@ app_ui  <- function(request) {
                                value = default_print_uploaded_points_to_log),
                  ## . ####
                  ############################################################### #
-                 # ejscreen API tool link ####
-
+                 
+                 # EJScreen single-site-report widget ####
+                 
+                 ## note almost half of county fips codes are impossible to distinguish from zipcodes because the same number can be used for both
+                 span('widget for querying EJScreen by place name',
+                 div(HTML('
+                   <iframe
+                   src="https://www.epa.gov/sites/production/files/widgets/ejscreenwidget.html"
+                   id="ejscreen"
+                   width="220"
+                   height="255"
+                   scrolling="no"
+                   frameborder="0"
+                   marginwidth="0"
+                   marginheight="0">
+                     </iframe>
+                     '
+                 ))),
+                   
+                 # EJScreen API tool link ####
+                 
                  span('tool for batch use of the EJScreen API: ',
 
-                      a('ejscreenapi tool',
+                      a('ejscreenapi tool for EPA staff use (only within office or by EPA VPN)',
                         href = 'https://rstudio-connect.dmap-stage.aws.epa.gov/content/163e7ff5-1a1b-4db4-ad9e-e9aa5d764002/',
                         target = '_blank', rel = 'noreferrer noopener'))
                  

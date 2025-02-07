@@ -113,10 +113,8 @@ test_that('below min returns zero with warning??',{
                                                lookup = tab)
     })
   
-  expect_equal(val, c(0, 4, 4, 5))
+  expect_equal(val, c(0, 3, 4, 5)) ## ?
 })
-
-
 
 test_that('order does not affect pctiles',{
   

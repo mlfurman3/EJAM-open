@@ -1,5 +1,5 @@
 
-#' DRAFT / WAS WORK IN PROGRESS  - find nearby blocks using Quad Tree data structure for speed, CLUSTERED FOR PARALLEL PROCESSING
+#' DRAFT / WAS WORK IN PROGRESS but largely obsolete now - take a look and start over - find nearby blocks using Quad Tree data structure for speed, CLUSTERED FOR PARALLEL PROCESSING
 #'
 #' @description Uses packages parallel and snow. [parallel::makePSOCKcluster] is an enhanced version of [snow::makeSOCKcluster] in package snow.
 #'     It runs Rscript on the specified host(s) to set up a worker process which listens on a socket for expressions to evaluate, and returns the results (as serialized objects).
@@ -17,6 +17,7 @@
 #' @seealso   [getblocksnearby()] [getblocksnearbyviaQuadTree()]
 #'
 #' @keywords internal
+#' @noRd
 #'
 getblocksnearbyviaQuadTree_Clustered <- function(sitepoints,radius, maxradius, avoidorphans, CountCPU = 1, quadtree) {
 

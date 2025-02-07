@@ -29,8 +29,9 @@
 #' @param folder_local_source path of local folder to
 #'   look in for locally saved copies in case pins board is not reachable by user.
 #' @param justchecking can set to TRUE to just see a list of what pins are stored in that board
-#' @param silent set to TRUE to suppress cat() msgs to console
 #' @param ignorelocal set it to TRUE to avoid 1st checking local disk for copies of files
+#' @param silent set to TRUE to suppress cat() msgs to console
+#' @param return_data_table whether the [read_ipc_file()] should return a data.table (T, the default), or arrow (F). Passed to [dataload_from_local()]
 #' @param onAttach Indicates whether the function is being called from onAttach. IF so, it will download all arrow files if user cannot connect to PINS board
 #' @import pins
 #'
@@ -65,6 +66,7 @@ dataload_from_pins <- function(
     justchecking = FALSE,
     ignorelocal = FALSE,
     silent = FALSE,
+    return_data_table = TRUE,
     onAttach = FALSE) {
   
   if (!all(is.character(varnames))) {
@@ -89,7 +91,7 @@ dataload_from_pins <- function(
     if (!ignorelocal) {
       #  display in console some info on where these objects are
       dataload_from_local(varnames = varnames, envir = envir,
-                          justchecking = TRUE, folder_local_source = folder_local_source)
+                          justchecking = TRUE, folder_local_source = folder_local_source, return_data_table = return_data_table)
     }
   }
   ####################################################### #
@@ -175,7 +177,8 @@ if (justchecking) {
   for (i in 1:length(varnames)) {
     
     varname_i <- varnames[i]
-    
+    if(!return_data_table) varname_i <- paste0(varname_i, "_arrow")
+
     # 1. TRY MEMORY ####
     
     if (exists(varname_i, envir = envir)) {
@@ -193,7 +196,7 @@ if (justchecking) {
         # (before bothering with pins board server)
         if (!silent) {cat(varname_i, spacing[i], 
                           " - is NOT in memory. Checking local disk... ")}
-        dataload_from_local(varname_i, folder_local_source = folder_local_source, ext = 'arrow', envir = envir)
+        dataload_from_local(varname_i, folder_local_source = folder_local_source, envir = envir, return_data_table = return_data_table)
         if (exists(varname_i, envir = envir)) {
           ## done (got from local disk) ####
           if (!silent) {cat(varname_i, spacing[i], 

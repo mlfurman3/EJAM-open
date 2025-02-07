@@ -380,9 +380,10 @@ testthat::test_that("shapefile_from_any(testfilename_zipshp) works", {
 ######################################################### # 
 testthat::test_that("shapefile_from_any(testfilename_json) works", {
   testfilename_json      <- system.file("testdata/shapes/portland.json",           package = "EJAM")
+  expect_warning({
   expect_no_error({junk <- capture.output({
     JUNK <- shapefile_from_any(testfilename_json)
-  })})
+  })  })}, regexp = 'ejam_uniq_id columns was already in shp')
   expect_true("sf" %in% class(JUNK))
 })
 ######################################################### # 

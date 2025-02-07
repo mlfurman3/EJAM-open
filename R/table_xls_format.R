@@ -313,13 +313,13 @@ table_xls_format <- function(overall, eachsite, longnames=NULL, formatted=NULL, 
   if (ok2plot) {
     if (!is.null(bybg) & plot_distance_by_group) {
       cat('plotting mean distance by group\n')
-      fname  <- try(
+      fname <- try(
         suppressWarnings(
-          plot_distance_mean_by_group(bybg, 
-                                      demogvarname = c(names_d, names_d_subgroups), 
-                                      demoglabel = fixcolnames(c(names_d, names_d_subgroups), 
-                                                               oldtype = 'r', newtype = 'shortlabel'),
-                                      returnwhat = "plotfilename", graph = TRUE)
+          plot_distance_mean_by_group(bybg,
+                                  demogvarname = c(names_d, names_d_subgroups),
+                                  demoglabel = fixcolnames(c(names_d, names_d_subgroups),
+                                                           oldtype = 'r', newtype = 'shortlabel'),
+                                  returnwhat = "plotfilename", graph = TRUE)
         )
       )
       if (inherits(fname, "try-error") | is.na(fname)) {
@@ -373,9 +373,8 @@ table_xls_format <- function(overall, eachsite, longnames=NULL, formatted=NULL, 
     } else {
       message("PNG file not found or could not be generated.")
     }
-    
+
   }
-  
   
   ## COMMUNITY REPORT ####
   
@@ -385,6 +384,7 @@ table_xls_format <- function(overall, eachsite, longnames=NULL, formatted=NULL, 
   }
   if (community_reportadd) {
     mytempdir <- tempdir()
+    Sys.setenv(OPENSSL_CONF="/dev/null")
     png_file <- file.path(mytempdir, 'community_report.png')
     # Convert HTML to image using webshot
     tryCatch({
@@ -398,7 +398,7 @@ table_xls_format <- function(overall, eachsite, longnames=NULL, formatted=NULL, 
     if (file.exists(png_file)) {
       tryCatch({
         # height and width are static, need to be updated if content on community report changes
-        openxlsx::insertImage(wb, sheet = 'Community Report', file = png_file, width = 10, height = 30, dpi = 500)
+        openxlsx::insertImage(wb, sheet = 'Community Report', file = png_file, width = 10, height = 32, dpi = 500)
       }, error = function(e) {
         message("Error inserting image into Excel:", e$message)
         # Handle the error (e.g., fallback mechanism, logging, etc.)
@@ -408,7 +408,6 @@ table_xls_format <- function(overall, eachsite, longnames=NULL, formatted=NULL, 
     }
   }
   ######################################################################## #
-  
   ## NOTES tab  ####
   
   openxlsx::addWorksheet(wb, sheetName = "notes", gridLines = FALSE)
@@ -729,7 +728,6 @@ table_xls_format <- function(overall, eachsite, longnames=NULL, formatted=NULL, 
       warning(paste0("graycolnames not found among column headers: ", graycolnames, collapse = ", "), " ")}
   }
   ###########################################  ###########################################  ########################################## #
-  
   ## HEATMAP via CONDITIONAL FORMATTING  ####
   # to highlight large percentiles in Excel
   

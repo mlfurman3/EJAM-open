@@ -143,6 +143,54 @@ function(lat = 40.81417, lon = -96.69963, radius = 1, names = "long", test = "fa
 }
 ####################################################### #
 
+# ejam2excel ####
+#
+#* like ejam2excel(), returns xlsx file of EJAM analysis results for all residents within X miles of a single point defined by latitude and longitude. 
+#*
+#* @param lat Latitude decimal degrees (single point only, for now)
+#* @param lon Longitude decimal degrees (single point only, for now)
+#* @param radius Radius in miles
+#* @param names "long" returns plain-English name of each indicator. Any other setting returns short variable names like "pctlowinc"
+#* @param test "true" or "false" If true, returns a pre-calculated result (ignoring lat, lon, radius)
+#* @param ... other parameters passed to ejam2excel()
+#* 
+#* Like EJAM::ejam2excel()
+#* 
+#* @serializer write_file
+#* @get /ejam2excel
+#* 
+function(lat = 40.81417, lon = -96.69963, radius = 1, test = "false", ...) {
+  
+  fname = "EJAM_results.xlsx"
+  
+  lat <- as.numeric(lat); lon <- as.numeric(lon); radius <- as.numeric(radius)
+  if (length(lat) != 1 | length(lon) != 1) {lat <- 40.81417; lon <- -96.69963}
+  if (length(radius) != 1) {radius <- 1}
+  
+  if (test == "true") {
+    out <- as.data.frame(EJAM::testoutput_ejamit_10pts_1miles$results_overall)
+  } else {
+    # promises::future_promise({ # did not seem to work 
+    out <- ejamit(
+      sitepoints = data.frame(lat = lat, lon = lon),
+      radius = radius
+    )$results_overall
+    # }) # did not seem to work
+  }
+  
+  out <- ejam2excel(out, ...)
+  
+  # if (attachment == "true") {
+  plumber::as_attachment(
+    value = out,
+    filename = fname
+  )
+  # } else {
+  #   out
+  #   }
+}
+####################################################### #
+
 # getblocksnearby ####
 #
 #* json table of distances to all Census blocks near given point.

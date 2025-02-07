@@ -16,13 +16,13 @@ resource provided by the United States Environmental Protection Agency
 environmental information aggregated within and across hundreds or
 thousands of places, all at the same time.
 
-### What is EJAM?
+### What Can You Do with EJAM?
 
-- [What is EJAM?](articles/0_whatis.html)
+- [What is EJAM?](https://usepa.github.io/EJAM/articles/0_whatis.html)
 
 ### EJAM as a Web Application
 
-[EJAM can be used as a web app](articles/0_webapp.html), providing a
+[EJAM can be used as a web app](https://usepa.github.io/EJAM/articles/0_webapp.html), providing a
 simple user interface that lets anyone quickly see the results of a
 basic analysis.
 
@@ -36,7 +36,7 @@ and polygons, to very quickly aggregate and compare large numbers of
 locations.
 
 Again, installing the R package also allows one to use [EJAM as a local
-web app](articles/0_webapp.html) if the shiny app is launched locally on
+web app](https://usepa.github.io/EJAM/articles/0_webapp.html) if the shiny app is launched locally on
 a user’s own computer.
 
 More information about the EJAM R package:

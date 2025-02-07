@@ -1,12 +1,16 @@
-#' get lat,lon of each block internal point via blockid
-#' 
-#' get expanded version of sites2blocks data.table, with new lat,lon columns
-#' 
-#' @param s2b like [testoutput_getblocksnearby_10pts_1miles], output of [getblocksnearby()]
+
+
+#' utility to add lat lon columns to data.table by reference, joining on blockid
+#'
+#' get expanded version of data.table, such as sites2blocks,
+#' with new lat,lon columns
+#'
+#' @param s2b data.table like [testoutput_getblocksnearby_10pts_1miles],
+#' output of [getblocksnearby()],
+#' with column called blockid
 #'
 #' @return returns the input data.table but with lat,lon columns added as block coordinates
-#'
-#' @examples 
+#' @examples
 #'  s2b = copy(testoutput_getblocksnearby_10pts_1miles)
 #'  latlon_join_on_blockid(s2b) 
 #'
@@ -14,11 +18,11 @@
 #'
 latlon_join_on_blockid = function(s2b) {
   
-  if(missing(s2b)){
+  if (missing(s2b)) {
     warning('No value provided for argument "s2b".')
     return(NULL)
   }
-  else if(all(is.na(s2b)) | is.null(s2b)){
+  else if (all(is.na(s2b)) | is.null(s2b)) {
       warning('NULL or NA "s2b" passed as inputs.')
       return(NULL)
   }
@@ -29,4 +33,4 @@ latlon_join_on_blockid = function(s2b) {
     s2b[blockpoints, `:=`(lat = lat, lon = lon), on = "blockid"]
   )
 }
-########################################################################################### # 
+########################################################################################### #

@@ -15,11 +15,13 @@ source(system.file("global.R", package = "EJAM"))
 # source(system.file("global_EJAMejscreenapi.R", package = "EJAM"))
 
 
-if (!exists("app_ui")) {
-  cat("app_ui() is an unexported function -- cannot be tested without devtools::load_all() to test the local source version,
-      or using ::: to test the installed version")
-}
+
 test_that("app ui", {
+  
+  if (!exists("app_ui")) {
+    cat("app_ui() is an unexported function -- cannot be tested without devtools::load_all() to test the local source version,
+      or using ::: to test the installed version")
+  }
   skip_if_not(exists("app_ui"))
   ui <- app_ui() # unexported function, so would require using ::: or devtools::load_all()
   golem::expect_shinytaglist(ui)
@@ -31,11 +33,13 @@ test_that("app ui", {
 })
 
 
-if (!exists("app_server")) {
-  cat("app_server() is an unexported function -- cannot be tested without devtools::load_all() to test the local source version,
-      or using ::: to test the installed version")
-}
+
 test_that("app server is a function", {
+  
+  if (!exists("app_server")) {
+    cat("app_server() is an unexported function -- cannot be tested without devtools::load_all() to test the local source version,
+      or using ::: to test the installed version")
+  }
   skip_if_not(exists("app_server"))
   server <- app_server # unexported function, so would require using ::: or devtools::load_all()
   expect_type(server, "closure")
@@ -46,12 +50,14 @@ test_that("app server is a function", {
   }
 })
 
-if (!exists("app_sys")) {
-  cat("app_sys() is an unexported function -- cannot be tested without devtools::load_all() to test the local source version,
-      or using ::: to test the installed version")
-}
+
 test_that(
   "app_sys works and finds golem-config.yml", {
+    
+    if (!exists("app_sys")) {
+      cat("app_sys() is an unexported function -- cannot be tested without devtools::load_all() to test the local source version,
+      or using ::: to test the installed version")
+    }
     skip_if_not(exists("app_sys"))
     expect_true(
       file.exists(
@@ -62,12 +68,13 @@ test_that(
   }
 )
 
-if (!exists("get_golem_config")) {
-  cat("get_golem_config() is an unexported function -- cannot be tested without devtools::load_all() to test the local source version,
-      or using ::: to test the installed version")
-}
+
 test_that(
   "golem-config works and app is set as 'production' not  'dev' ", {
+    if (!exists("get_golem_config")) {
+      cat("get_golem_config() is an unexported function -- cannot be tested without devtools::load_all() to test the local source version,
+      or using ::: to test the installed version")
+    }
     skip_if_not(exists("app_sys"))
     config_file <- app_sys("golem-config.yml") # this gets path to source version of .yml # unexported function, so would require using ::: or devtools::load_all()
     #  source/EJAM/inst/golem-config.yml = installed/EJAM/golem-config.yml

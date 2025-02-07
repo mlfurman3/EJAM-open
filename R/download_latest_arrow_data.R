@@ -39,22 +39,25 @@ download_latest_arrow_data <- function(
     usersArrowVersions <- readLines(ejamdata_version_fpath)
   }
   filenames <- paste0(varnames, ".arrow")
+  full_paths <- file.path(installed_data_folder, filenames)
+  missing_files <- filenames[!file.exists(full_paths)]
   
   # if user has latest release, check if any requested files are missing
   # if so, need to re-download (default to all files). Otherwise, all set
   if (isTRUE(usersArrowVersions == latestArrowVersion)) {
-    message("Arrow-format datasets (blocks, etc.) are up-to-date -- locally-installed and latest-released data repository versions match.")
-    
-    full_paths <- file.path(installed_data_folder, filenames)
-    
-    missing_files <- filenames[!file.exists(full_paths)]
     if (length(missing_files) == 0) {
+      message("Arrow-format datasets (blocks, etc.) are up-to-date -- locally-installed and latest-released data repository versions match.")
       return(NULL)
+    } else {
+      message("One or more arrow-format datasets (blocks, etc.) are missing. Downloading latest version from ", repository)
     }
-    message(paste0("However, some files are missing. Downloading them from the data repository at ", repository))
+  } 
+  # If user installs for the first time, they won't have any arrow datasets or
+  # the txt with the version, which is added at the end of this program
+  else if(is.null(usersArrowVersions)) {
+    message("Downloading latest arrow-format datasets (blocks, etc.)")
   } else {
-    message(paste0("Arrow-format datasets (blocks, etc.) are out-of-date. Newer versions are available at ", repository))
-    missing_files <- filenames
+    message(paste0("Arrow-format datasets (blocks, etc.) are out-of-date. Downloading latest versions from ", repository))
   }
   
   # otherwise, download the data from EJAM package's release assets
@@ -67,7 +70,7 @@ download_latest_arrow_data <- function(
     .token = ""
   )
   
-  message("Finished downloading. Updating stored local version.")
+  message("Finished downloading. Updating stored arrow version.")
   # update user's arrowversion
   writeLines(latestArrowVersion, ejamdata_version_fpath)
   message("Finished updating stored local version.")

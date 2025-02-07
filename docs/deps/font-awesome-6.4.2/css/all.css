@@ -5369,9 +5369,6 @@ readers do not read off random characters that represent icons */
 .fa-briefcase-medical::before {
   content: "\f469"; }
 
-.fa-genderless::before {
-  content: "\f22d"; }
-
 .fa-chevron-right::before {
   content: "\f054"; }
 
@@ -5500,12 +5497,6 @@ readers do not read off random characters that represent icons */
 
 .fa-sim-card::before {
   content: "\f7c4"; }
-
-.fa-transgender::before {
-  content: "\f225"; }
-
-.fa-transgender-alt::before {
-  content: "\f225"; }
 
 .fa-mercury::before {
   content: "\f223"; }

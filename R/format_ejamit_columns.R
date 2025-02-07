@@ -27,37 +27,36 @@ format_ejamit_columns <- function(df, nms=c()) {
     return(NULL)
   }
   
+  if (missing(nms)) {nms <- names(df)}
+  
+  
   if (any(!(nms %in% names(df)))) {
-    warning('Some names not found in df. Ignoring those ones.')
+    # warning('Some names not found in df. Ignoring those.')
     nms <- nms[nms %in% names(df)]
   }
-  
+    nms <- nms[nms %in% map_headernames$rname]
+
   if (length(nms) == 0 | is.null(nms)) {
     warning('No valid names found. Please provide names of columns using the nms argument.')
     return(df)
   }
   
-  nms <- nms[nms %in% map_headernames$rname]
   if (length(nms) == 0) {return(df)}
+  suppressWarnings({
   decimal_num <- as.numeric(fixcolnames(nms, 'rname','decimals'))#varinfo(nms, 'decimals')$decimals)
-  sigfig_num  <- as.numeric(fixcolnames(nms, 'rname','sigfigs')) #varinfo(nms, 'sigfigs')$sigfigs)
-  
+  sigfig_num  <- as.numeric(fixcolnames(nms, 'rname','sigfigs')) #varinfo(nms, 'sigfigs')$sigfigs) # some are NA values which creates a warning while as.numeric is coercing to NA
+  })
   is.percentage <- as.logical(fixcolnames(nms, 'rname','pct_as_fraction_ejamit')) 
   is.percentage[is.na(is.percentage)] <- FALSE
-  # df_display <- df  
-  #raw_values <- unlist(df[, ..nms])
-  #formatted_values <- rep(NA, length(raw_values))
+
   for (i in seq_along(nms)) {
     colname <- nms[i]
     cur_value <- df[[colname]]
     
     if (!is.numeric(cur_value)) {
-      warning(paste("Skipping non numeric:", colname))
+      # warning(paste("Skipping non numeric:", colname))
       next
     }
-    #  else{
-    #   warning(paste("not skipping:", colname))
-    # }
     
     if (is.percentage[i] == TRUE) {
       if (is.na(decimal_num[i])) {

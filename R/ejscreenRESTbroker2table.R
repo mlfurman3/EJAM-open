@@ -125,13 +125,9 @@ ejscreenRESTbroker2table <- function(brokeroutput, getstatefromplacename = TRUE)
     } else {
       stateAbbr_hopefully <- substr(results$placename, nchar(results$placename) - 1, nchar(results$placename)) # get last two characters which should be 2-char State abbreviation
       
-      if (all(stateAbbr_hopefully %in% c(state.abb, "DC", "PR", "AS", "GU", "MP", "UM", "VI" ) )) {
+      if (all(stateAbbr_hopefully %in% stateinfo2$ST[stateinfo2$ST != 'US'] )) {
         results$stateAbbr <- stateAbbr_hopefully
-        results$stateName <- c(state.name, 
-                               c("District of Columbia", "Puerto Rico", "American Samoa", "Guam", "Northern Mariana Islands", "U.S. Minor Outlying Islands", "U.S. Virgin Islands"
-                               ))[match(results$stateAbbr, c(
-                                 state.abb,
-                                 "DC", "PR", "AS", "GU", "MP", "UM", "VI" ) )]
+        results$stateName <- (stateinfo2$statename[stateinfo2$statename != 'United States'])[match(results$stateAbbr, stateinfo2$ST[stateinfo2$ST != 'US'] )]
         # fips2statename(fips_state_from_state_abbrev(results$stateAbbr)) # get full state name from 2-char abbreviation, if relying on EJAM pkg
         
       } else {

@@ -13,7 +13,7 @@
 
 #' DRAFT utility to use formulas provided as text, to calculate indicators
 #'
-#' @details may be used by doaggregate_custom()
+#' @details may be used by custom_doaggregate()
 #' @param bg data.frame//table of indicators or variables to use
 #' @param keep.old names of columns (variables) to retain from among those provided in bg
 #' @param keep.new names of calculated variables to retain in output

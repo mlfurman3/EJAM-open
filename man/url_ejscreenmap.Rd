@@ -23,7 +23,14 @@ url_ejscreenmap(
 \item{linktext}{used as text for hyperlinks, if supplied and as_html=TRUE}
 
 \item{wherestr}{Name of place to center on (not FIPS code!).
-Passed to API in URL as wherestr= , if lat/lon not used.
+Note that nearly half of all county fips codes are impossible to distinguish from
+5-digit zipcodes because the same numbers are used for both purposes.
+
+For zipcode 10001, use url_ejscreenmap(wherestr =  '10001')
+
+For County FIPS code 10001, use url_ejscreenmap(wherestr =  fips2name('10001'))
+
+This parameter is passed to the API as wherestr= , if lat/lon not specified.
 Can be State abbrev like "NY" or full state name,
 or city like "New Rochelle, NY" as from fips2name() -- using fips2name()
 works for state, county, or city FIPS code converted to name.

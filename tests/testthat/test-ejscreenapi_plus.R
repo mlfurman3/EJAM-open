@@ -2,11 +2,7 @@
 cat('\ntesting ejscreenapi_plus()\n')
 
 
-testradius = 1
-testlat <-  38.8959  # testpoints_50$lat[1]
-testlon <- -77.02985 # testpoints_50$lon[1]
-test2lat <- c(33.943883,    39.297209)
-test2lon <- c(-118.241073, -76.641674)
+
 # pts <- data.frame(lat = test2lat, lon = test2lon)
 # 
 # outrest       <- ejscreenRESTbroker(lon = testlon, lat = testlat, radius = testradius)
@@ -19,6 +15,11 @@ test2lon <- c(-118.241073, -76.641674)
 # 
 
 test_that("ejscreenapi_plus() works at all", {
+  testradius = 1
+  testlat <-  38.8959  # testpoints_50$lat[1]
+  testlon <- -77.02985 # testpoints_50$lon[1]
+  test2lat <- c(33.943883,    39.297209)
+  test2lon <- c(-118.241073, -76.641674)
   expect_no_error(
     suppressWarnings({
       junk = capture.output({
@@ -31,6 +32,11 @@ test_that("ejscreenapi_plus() works at all", {
   )
 })
 test_that('ejscreenapi_plus() does not crash for 1 point', {
+  testradius = 1
+  testlat <-  38.8959  # testpoints_50$lat[1]
+  testlon <- -77.02985 # testpoints_50$lon[1]
+  test2lat <- c(33.943883,    39.297209)
+  test2lon <- c(-118.241073, -76.641674)
   expect_no_error({
     suppressMessages(
       suppressWarnings({
@@ -43,6 +49,11 @@ test_that('ejscreenapi_plus() does not crash for 1 point', {
   expect_equal(NROW(outplus), 1)
 })
 test_that('ejscreenapi_plus() does not crash for 2 points, outputs list (data.frame) of 2 rows', {
+  testradius = 1
+  testlat <-  38.8959  # testpoints_50$lat[1]
+  testlon <- -77.02985 # testpoints_50$lon[1]
+  test2lat <- c(33.943883,    39.297209)
+  test2lon <- c(-118.241073, -76.641674)
   expect_no_error({
       suppressMessages(
         suppressWarnings({

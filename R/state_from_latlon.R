@@ -48,6 +48,9 @@ state_from_nearest_block_bysite <- function(s2b) {
 #' Find what state is where each point is located
 #'
 #' Takes 3 seconds to find state for 1k points, so a faster alternative would be useful
+#' It can take approx. one minute for 2.5 million points
+#'   as in state_from_latlon(frs$lat, frs$lon)
+#' 
 #' @param lon longitudes vector
 #' @param lat latitudes vector
 #' @seealso [states_shapefile] [get_blockpoints_in_shape()] [state_from_sitetable()]

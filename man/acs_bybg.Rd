@@ -10,7 +10,7 @@ acs_bybg(
   cache_table = FALSE,
   year = 2022,
   output = "wide",
-  state = EJAM::stateinfo$ST,
+  state = stateinfo$ST,
   county = NULL,
   zcta = NULL,
   geometry = FALSE,

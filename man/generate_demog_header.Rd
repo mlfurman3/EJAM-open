@@ -4,7 +4,12 @@
 \alias{generate_demog_header}
 \title{Build header for demog. + envt. tables in community report}
 \usage{
-generate_demog_header()
+generate_demog_header(
+  title = "Environmental and Socioeconomic Indicators Data"
+)
+}
+\arguments{
+\item{title}{title}
 }
 \description{
 Build header for demog. + envt. tables in community report

@@ -11,6 +11,7 @@ getblocksnearby(
   radius_donut_lower_edge = 0,
   avoidorphans = FALSE,
   quadtree = NULL,
+  quaddatatable = NULL,
   quiet = FALSE,
   parallel = FALSE,
   use_unadjusted_distance = TRUE,

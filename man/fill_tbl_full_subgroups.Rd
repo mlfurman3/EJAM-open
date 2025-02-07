@@ -2,15 +2,35 @@
 % Please edit documentation in R/community_report_helper_funs.R
 \name{fill_tbl_full_subgroups}
 \alias{fill_tbl_full_subgroups}
-\title{Create full demog subgroup HTML table of indicator rows}
+\title{Create full demog subgroup/ language/ health/ community/ etc. HTML table of indicator rows}
 \usage{
-fill_tbl_full_subgroups(output_df)
+fill_tbl_full_subgroups(
+  output_df,
+  title = "EJScreen environmental and socioeconomic indicators data",
+  list_of_sections = NULL,
+  extratable_show_ratios_in_report = TRUE,
+  hide_missing_rows_for = names_d_language,
+  extra_title_top_row = "ADDITIONAL INFORMATION"
+)
 }
 \arguments{
-\item{output_df, }{single row of results table from doaggregate -
-either results_overall or one row of bysite}
+\item{output_df}{single row of results table from doaggregate or possibly ejamit(),
+either $results_overall or one row of $results_bysite, where colnames are indicators like pop, pctpoor, etc.}
+
+\item{title}{Text of overall title of report table}
+
+\item{list_of_sections}{named list of vectors,
+where each name is text phrase that is title of a section of the table,
+and each vector is the vector of colnames of output_df that are indicators to show in that section.}
+
+\item{extratable_show_ratios_in_report}{logical, whether to add columns with ratios to US and State overall values}
+
+\item{hide_missing_rows_for}{only for the indicators named in this vector,
+leave out rows in table where raw value is NA, as with many of names_d_language}
+
+\item{extra_title_top_row}{text to go in box at top left of table}
 }
 \description{
-Create full demog subgroup HTML table of indicator rows
+Create full demog subgroup/ language/ health/ community/ etc. HTML table of indicator rows
 }
 \keyword{internal}

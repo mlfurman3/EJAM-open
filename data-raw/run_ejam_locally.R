@@ -13,6 +13,13 @@ library(sf)
 ## load all EJAM functions, even if not-exported
 devtools::load_all()
 
+# quaddata and localtree seem to sometimes not get set after install 
+# which causes the app to crash upon running the analysis
+if(!exists("quaddata")) {
+  EJAM:::dataload_from_local(varnames = "quaddata")
+}
+localtree <- SearchTrees::createTree( quaddata, treeType = "quad", dataType = "point")
+
 ## if you make any changes to a function, can re-run it with source
 #source('R/example_function_that_I_changed.R')
 

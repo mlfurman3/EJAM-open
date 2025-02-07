@@ -21,6 +21,8 @@ table_xls_from_ejam(
     "Miles radius of circular buffer (or distance used if buffering around polygons)",
   hyperlink_colnames = c("EJScreen Report", "EJScreen Map", "ECHO report"),
   site_method = "",
+  mapadd,
+  report_map,
   ...
 )
 }
@@ -57,6 +59,8 @@ prompts RStudio user interactively asking where to save the downloaded file}
 
 \item{site_method}{site selection method, such as NAICS, FRS, SHP, latlon,
 optional site method parameter used to create a more specific title with create_filename}
+
+\item{mapadd}{logical option for including a map of the points}
 
 \item{...}{optional additional parameters passed to \code{\link[=table_xls_format]{table_xls_format()}}, such as
 heatmap_colnames, heatmap_cuts, heatmap_colors, etc.}

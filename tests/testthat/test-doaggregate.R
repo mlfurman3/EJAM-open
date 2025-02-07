@@ -230,47 +230,98 @@ test_that("radius param to doagg that is string/text like '0.25' is not interpre
 ## to look at the test objects created earlier in setup.R,
 # nix <- sapply(1:length(bad_numbers), function(z) {cat( "\n\n\n------------------------\n\n  ", names(bad_numbers)[z], "\n\n\n" ); print( bad_numbers[z][[1]] )}); rm(nix)
 
-cause_no_warn_no_err <- list(normalnumber = 1.3)
 
-for (i in 1:length(cause_no_warn_no_err)) {
-  cat('\n  Trying radius that is', names(cause_no_warn_no_err)[i], '- Testing to ensure it works... ')
+
+test_that(paste0("doaggregate radius with the input below should not warn or err!"), {
+  cause_no_warn_no_err <- list(normalnumber = 1.3)
+  cat('\n  Trying radius that is', names(cause_no_warn_no_err)[1], '- Testing to ensure it works... ')
   try({
-    test_that(paste0("doaggregate radius like ", names(cause_no_warn_no_err)[i], " should not warn or err!"), {
+  expect_no_condition(
+    doaggregate(sites2blocks =  testoutput_getblocksnearby_10pts_1miles, radius = cause_no_warn_no_err[[1]])
+  )
+  })
+})
 
-      expect_no_condition(
-        doaggregate(sites2blocks =  testoutput_getblocksnearby_10pts_1miles, radius = cause_no_warn_no_err[[i]])
-      )
-    })
-  } )
-}
-
-cause_warn <- bad_numbers[c('TRUE1', 'text1', 'list1', "NA1", "NULL1")]
-
-for (i in 1:length(cause_warn)) {
-  cat('\n  Trying radius that is', names(cause_warn)[i], '- Testing to ensure it warns... ')
+test_that(paste0("doaggregate radius like with the input below should warn!"), {
+  
+  cause_warn <- bad_numbers[c('TRUE1', 'text1', 'list1', "NA1", "NULL1")]
+  
+  cat('\n  Trying radius that is', names(cause_warn)[1], '- Testing to ensure it warns... ')
   try({
-    test_that(paste0("doaggregate radius like ", names(cause_warn)[i], " should warn!"), {
-
-      expect_warning(
-        doaggregate(sites2blocks =  testoutput_getblocksnearby_10pts_1miles, radius = cause_warn[[i]])
-      )
-    })
-  } )
-}
-
-cause_err <- bad_numbers[c("vector2", "array2","matrix_1row_4col", "matrix_4row_1col", "matrix_2x2" )]
-
-for (i in 1:length(cause_err)) {
-  cat('\n  Trying radius that is', names(cause_err)[i], '- Testing to ensure it reports error... ')
+  expect_warning(
+    doaggregate(sites2blocks =  testoutput_getblocksnearby_10pts_1miles, radius = cause_warn[[1]]), info = paste0("doaggregate radius like ", names(cause_warn)[1], " should warn!")
+  )
+  })
+  
+  cat('\n  Trying radius that is', names(cause_warn)[2], '- Testing to ensure it warns... ')
   try({
-    test_that(paste0("doaggregate radius like ", names(cause_err)[i], " should report error!"), {
+    expect_warning(
+      doaggregate(sites2blocks =  testoutput_getblocksnearby_10pts_1miles, radius = cause_warn[[2]]), info = paste0("doaggregate radius like ", names(cause_warn)[2], " should warn!")
+    )
+  })
+  
+  cat('\n  Trying radius that is', names(cause_warn)[3], '- Testing to ensure it warns... ')
+  try({
+    expect_warning(
+      doaggregate(sites2blocks =  testoutput_getblocksnearby_10pts_1miles, radius = cause_warn[[3]]), info = paste0("doaggregate radius like ", names(cause_warn)[3], " should warn!")
+    )
+  })
+  
+  cat('\n  Trying radius that is', names(cause_warn)[4], '- Testing to ensure it warns... ')
+  try({
+    expect_warning(
+      doaggregate(sites2blocks =  testoutput_getblocksnearby_10pts_1miles, radius = cause_warn[[4]]), info = paste0("doaggregate radius like ", names(cause_warn)[4], " should warn!")
+    )
+  })
+  
+  cat('\n  Trying radius that is', names(cause_warn)[5], '- Testing to ensure it warns... ')
+  try({
+    expect_warning(
+      doaggregate(sites2blocks =  testoutput_getblocksnearby_10pts_1miles, radius = cause_warn[[5]]), info = paste0("doaggregate radius like ", names(cause_warn)[5], " should warn!")
+    )
+  })
+})
 
-      expect_error(
-        doaggregate(sites2blocks =  testoutput_getblocksnearby_10pts_1miles, radius = cause_err[[i]])
-      )
-    })
-  } )
-}
+test_that(paste0("doaggregate radius like with the input below should report error!"), {
+  cause_err <- bad_numbers[c("vector2", "array2","matrix_1row_4col", "matrix_4row_1col", "matrix_2x2" )]
+  
+  cat('\n  Trying radius that is', names(cause_err)[1], '- Testing to ensure it reports error... ')
+  try({
+  expect_error(
+    doaggregate(sites2blocks =  testoutput_getblocksnearby_10pts_1miles, radius = cause_err[[1]]), info = paste0("doaggregate radius like ", names(cause_err)[1], " should report error!")
+  )
+  })
+  
+  cat('\n  Trying radius that is', names(cause_err)[2], '- Testing to ensure it reports error... ')
+  try({
+    expect_error(
+      doaggregate(sites2blocks =  testoutput_getblocksnearby_10pts_1miles, radius = cause_err[[2]]), info = paste0("doaggregate radius like ", names(cause_err)[2], " should report error!")
+    )
+  })
+  
+  cat('\n  Trying radius that is', names(cause_err)[3], '- Testing to ensure it reports error... ')
+  try({
+    expect_error(
+      doaggregate(sites2blocks =  testoutput_getblocksnearby_10pts_1miles, radius = cause_err[[3]]), info = paste0("doaggregate radius like ", names(cause_err)[3], " should report error!")
+    )
+  })
+  
+  cat('\n  Trying radius that is', names(cause_err)[4], '- Testing to ensure it reports error... ')
+  try({
+    expect_error(
+      doaggregate(sites2blocks =  testoutput_getblocksnearby_10pts_1miles, radius = cause_err[[4]]), info = paste0("doaggregate radius like ", names(cause_err)[4], " should report error!")
+    )
+  })
+  
+  cat('\n  Trying radius that is', names(cause_err)[5], '- Testing to ensure it reports error... ')
+  try({
+    expect_error(
+      doaggregate(sites2blocks =  testoutput_getlocksnearby_10pts_1miles, radius = cause_err[[5]]), info = paste0("doaggregate radius like ", names(cause_err)[5], " should report error!")
+    )
+  })
+})
+
+
 
 ## print(setdiff(names(bad_numbers), names(c(cause_no_warn_no_err, cause_warn, cause_err))))
 ## c("matrix_1x1", "array1", "character1", "df1")

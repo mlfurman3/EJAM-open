@@ -12,7 +12,7 @@ testthat::test_that("ejamit_sitetype_from_output(out_shp) ok",  {
       # fil = 'portland.gdb.zip'    # did not work like this
       shapefname = paste0(system.file('testdata/shapes', package = "EJAM"), "/", fil)
       
-      out_shp     = ejamit(shapefile = shapefname)
+      out_shp     = ejamit(shapefile = shapefname, radius = 0)
     })
   })
   

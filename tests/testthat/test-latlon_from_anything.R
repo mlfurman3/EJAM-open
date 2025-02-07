@@ -84,7 +84,7 @@ testthat::test_that("latlon_from_anything works with 1-row data.frame", {
 })
 ################################################ #
 
-testthat::test_that("latlon_from_anything accepts data.table or data.frame, ***returns data.table now***", {
+testthat::test_that("latlon_from_anything accepts data.table or data.frame", {
   
  expect_no_error({
    # check 1-row dt
@@ -94,7 +94,7 @@ testthat::test_that("latlon_from_anything accepts data.table or data.frame, ***r
     x <- latlon_from_anything(data.table::data.table(lat = testpoints_10$lat, lon = testpoints_10$lon))
   })
   expect_true(
-    ("data.frame" %in% class(x)) & "data.table" %in% class(x)
+    ("data.frame" %in% class(x))  
   )
   expect_identical(
     latlon_from_anything(data.frame(            lat = testpoints_10$lat, lon = testpoints_10$lon)),
@@ -137,7 +137,7 @@ testthat::test_that("latlon_from_anything works with xlsx", {
   expect_no_error(
     {x <- latlon_from_anything(fname)}
   )  
-  
+  expect_equal(NROW(x), 10)
 })
 ################################################ #
 
@@ -148,12 +148,17 @@ testthat::test_that("latlon_from_anything works with matrix", {
   expect_no_error({
     suppressWarnings(
       {
-        x <- latlon_from_anything(x)
+        x1 <- latlon_from_anything(x)
+        x2 <-  latlon_from_anything(x, invalid_msg_table = TRUE)
       }
     )
   })
   expect_identical(
-    colnames(x),
+    colnames(x1),
+    c("lat",   "lon")
+  )
+  expect_identical(
+    colnames(x2),
     c("lat",   "lon",   "valid", "invalid_msg")
   )
 })

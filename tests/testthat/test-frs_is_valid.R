@@ -64,9 +64,11 @@ test_that("colname REGISTRY_ID ok, so no check done for invalid numbers, so retu
 })
 
 test_that("providing a data.table not just data.frame is handled/ fixed", {
-  testthat::expect_no_error(suppressWarnings(
-    frs_is_valid(data.table(id = 110000307695, "PRIMARY_NAME" = "testname")))
+  testthat::expect_no_error(suppressWarnings({
+    x = frs_is_valid(data.table(regid = 110000307695, "PRIMARY_NAME" = "testname"))
+    })
   )
+  expect_true(x)
 })
 
 

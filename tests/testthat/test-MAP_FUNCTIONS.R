@@ -35,11 +35,12 @@ test_that("popup_from_ejscreen() works even if 1 row or 1 indicator", {
   expect_no_error({
     suppressWarnings({
       # what if only some indicators available??
-      x = popup_from_ejscreen(testoutput_ejamit_10pts_1miles$results_bysite[,  1:20])
+      x10 = popup_from_ejscreen(testoutput_ejamit_10pts_1miles$results_bysite[,  1:20])
       # what if try to use for other table than supposed to
       x = popup_from_ejscreen(testpoints_10[1:2,]) 
     })
   })
+expect_equal(10, length(grep('long', x10)))  
 })
 ############################################## # 
 
@@ -83,10 +84,11 @@ if (exists("popup_from_df")) { # will likely deprecate
       suppressMessages({
         popup_from_df(testpoints_10[1:2,])
         popup_from_df(testoutput_ejamit_10pts_1miles$results_bysite[1:2,],  n = 3)
-        popup_from_df(testoutput_ejamit_10pts_1miles$results_bysite[1:2,], column_names = names_d, labels = fixcolnames(names_d, "r", "short"))
+        x = popup_from_df(testoutput_ejamit_10pts_1miles$results_bysite[1:2,], column_names = names_d, labels = fixcolnames(names_d, "r", "short"))
         # not testing 1 row or 1 indicator cases
       })
     })
+    expect_equal(2, length(x))
   })
 }
 ############################################## # 
@@ -94,11 +96,12 @@ if (exists("popup_from_df")) { # will likely deprecate
 test_that("popup_from_uploadedpoints() works", {
   expect_no_error({
     suppressMessages({
-      popup_from_uploadedpoints(testpoints_10[1:2,])
+      x = popup_from_uploadedpoints(testpoints_10[1:2,])
       # just one location
       popup_from_uploadedpoints(testpoints_10[1,])
     })
   })
+  expect_equal(2, length(x))
 })
 ############################################## # 
 
@@ -106,16 +109,19 @@ test_that("popup_from_uploadedpoints() works", {
 
 ############################################## # 
 ############################################## # 
-test_that("mapfast() works", {
+test_that("mapfast works", {
   expect_no_error({
-    suppressMessages({
-      mapfast(testpoints_10)
-      mapfast(testoutput_ejamit_10pts_1miles$results_bysite, radius = 0.2, column_names = names_d, browse = FALSE)
-      mapfast(testoutput_ejamit_10pts_1miles$results_bysite, radius = 0.2, column_names = names_d, labels = fixcolnames(names_d, "r", "short"))
-      # but note 0-1 not 0-100 shown for demog percentages this way
-    })
+    # suppressMessages({
+    x = mapfast(testpoints_10)
+    x
+    mapfast(testoutput_ejamit_10pts_1miles$results_bysite, radius = 0.2, column_names = names_d, browse = FALSE)
+    mapfast(testoutput_ejamit_10pts_1miles$results_bysite, radius = 0.2, column_names = names_d, labels = fixcolnames(names_d, "r", "short"))
+    # but note 0-1 not 0-100 shown for demog percentages this way
+    # })
   })
+  expect_true("leaflet" %in% class(x))
 })
+
 test_that("mapfast warns if forget specify table", {
   suppressWarnings({
     expect_warning({
@@ -126,20 +132,24 @@ test_that("mapfast warns if forget specify table", {
 
 test_that("mapfast should handle just 1 indicator!", {
   errmsgjunk = capture.output(
-    expect_no_error(
-      mapfast(testoutput_ejamit_10pts_1miles$results_bysite, radius = 0.2, column_names = "Demog.Index", labels = "Demographic Score", browse = FALSE)
-    )
+    expect_no_error({
+      x = mapfast(testoutput_ejamit_10pts_1miles$results_bysite, radius = 0.2, column_names = "Demog.Index", labels = "Demographic Score", browse = FALSE)
+      x
+    })
   )
+  expect_true('leaflet' %in% class(x))
 })
 ############################################## # 
 
 test_that("mapfastej() works", {
   expect_no_error({
     suppressWarnings({
-      mapfastej(testoutput_ejamit_10pts_1miles$results_bysite)
-      mapfastej(testoutput_ejamit_10pts_1miles$results_bysite, radius = 3)
+      x = mapfastej(testoutput_ejamit_10pts_1miles$results_bysite)
+      y = mapfastej(testoutput_ejamit_10pts_1miles$results_bysite, radius = 3)
     })
   })
+  expect_true("leaflet" %in% class(x))
+  expect_true("leaflet" %in% class(y))
 })
 ############################################## # 
 ############################################## # 
@@ -158,12 +168,14 @@ test_that("map2browser() works", {
   testthat::skip_if_not(interactive())
   expect_no_error({
     suppressWarnings(
-    capture.output(
-      x = map2browser(ejam2map(testoutput_ejamit_10pts_1miles))
-    )
+      capture.output(
+        x = map2browser(ejam2map(testoutput_ejamit_10pts_1miles))
+      )
     )
     # file.exists(x) # tricky to test for that
   })
+  expect_true(is.character(x))
+  expect_true(length(x) == 1)
 })
 ############################################## # 
 ############################################## # 
@@ -171,7 +183,7 @@ test_that("map2browser() works", {
 test_that("map_facilities_proxy() works", {
   expect_no_error({
     suppressMessages({
-      map_facilities_proxy(
+      x = map_facilities_proxy(
         mapfast(testpoints_10[1,]), # only 1 point
         rad = 4, 
         popup_vec = popup_from_any(data.frame(
@@ -181,9 +193,11 @@ test_that("map_facilities_proxy() works", {
       ) 
     })
   })
+  expect_true("leaflet" %in% class(x))
+  
   expect_no_error({
     suppressMessages({
-      map_facilities_proxy(
+      x = map_facilities_proxy(
         mapfast(testpoints_10[1:2,]), 
         rad = 4, 
         popup_vec = popup_from_any(data.frame(
@@ -193,6 +207,7 @@ test_that("map_facilities_proxy() works", {
       ) 
     })
   })
+  expect_true("leaflet" %in% class(x))
 })
 
 ############################################## # 
@@ -206,43 +221,44 @@ test_that("mapfastej_counties() works", {
       capture.output({
         mydat = ejamit(fips = fips_counties_from_statename("Rhode Island")[1], radius = 0, silentinteractive = TRUE)$results_bysite
         suppressWarnings({
-        x = mapfastej_counties(mydat)
+          x = mapfastej_counties(mydat)
         })
       })
     })
     expect_true("leaflet" %in% class(x))
+    expect_true(NCOL(myshapes) == 6)
   })
 })
 ############################################## # 
+
 test_that("map_blockgroups_over_blocks() works", {
   expect_no_error({
-    capture.output({
-    y <- plotblocksnearby(testpoints_10[5,],
-                          radius = 0.5,
-                          returnmap = TRUE)
-    z = map_blockgroups_over_blocks(y)
+    junk = capture.output({
+      y <- plotblocksnearby(testpoints_10[5,],
+                            radius = 0.5,
+                            returnmap = TRUE)
+      x = map_blockgroups_over_blocks(y)
     })
   })
-  expect_true(
-    "leaflet" %in% class(z)
-  )
+  expect_true("leaflet" %in% class(x))
 })
 ############################################## # 
 test_that("shapes_counties_from_countyfips() works", {
   # Get Counties boundaries via API, to map them
-  expect_no_error({
-    myshapes = shapes_counties_from_countyfips(fips_counties_from_state_abbrev("DE")[1])
+  x = capture_output({
+    expect_no_error({
+      myshapes = shapes_counties_from_countyfips(fips_counties_from_state_abbrev("DE")[1])
+    })
   })
+  expect_true(sf::st_is_valid(myshapes))
 })
 ############################################## # ############################################## # 
-
+x = capture_output({
 myshapes = shapes_counties_from_countyfips(fips_counties_from_state_abbrev("DE")[1])  # kind of slow so just done once here for tests
-
+})
 ############################################## # 
 test_that("map_shapes_plot() works", {
-  
   # myshapes = shapes_counties_from_countyfips(fips_counties_from_state_abbrev("DE")[1])
-  
   expect_no_error({
     map_shapes_plot(myshapes)   
   })
@@ -264,20 +280,27 @@ test_that("map_shapes_mapview() if mapview pkg available works", {
   # requires mapview pkg be attached by setup.R in tests folders
   expect_no_error({
     # warns now but no error if package mapview not installed or not attached
-    map_shapes_mapview(myshapes)
+    x = map_shapes_mapview(myshapes)
   })
+  expect_true('mapview' %in% class(x))
 })
 ############################################## # 
 test_that("shapes_blockgroups_from_bgfips() works", {
+  junk = capture_output({
+    
   expect_no_error({
     x = shapes_blockgroups_from_bgfips()
   })
+  })
+  expect_true(sf::st_is_valid(x))
   expect_true("sf" %in% class(x))
 })
 ############################################## # 
 test_that("mapfast_gg() works", {
   expect_no_error({
-    mapfast_gg(testpoints_10)
+    x = mapfast_gg(testpoints_10)
+    x
   })
+  expect_true('ggplot' %in% class(x))
 })
 ############################################## # ############################################## # 

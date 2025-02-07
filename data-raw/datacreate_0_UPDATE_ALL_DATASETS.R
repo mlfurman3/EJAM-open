@@ -548,20 +548,33 @@ source_maybe("datacreate_high_pctiles_tied_with_min.R")
 source_maybe("datacreate_formulas.R")
 ######################################### #
 
-## Test data & examples of outputs ####
+## *** TESTDATA & TESTOUTPUTS_ - UPDATE IF RESULTS CHANGE (sample inputs & outputs) ####
+
 ######################################### #
 ### datacreate_test_address_table.R #### 
 # rstudioapi::documentOpen('./data-raw/datacreate_test_address_table.R')  
 source_maybe("datacreate_test_address_table.R")
 # creates several objects
 
+######################################### #
+### datacreate_testpoints_testoutputs.R ####
+# rstudioapi::documentOpen("./data-raw/datacreate_testpoints_testoutputs.R")
+## This includes 
+##                 devtools::load_all() 
+## within it:
+source_maybe("datacreate_testpoints_testoutputs.R")
+
+######################################### #
+### datacreate_testshapes_2.R ####
+# rstudioapi::documentOpen("./data-raw/datacreate_testshapes_2.R")
+source_maybe("datacreate_testshapes_2.R")
+
 ############################### pause here
 ############################## # 
 
 # save.image(file.path(localfolder, "work in progress.rda"))
 
-
-# may want to rebuild/ reinstall the package here,
+# Rebuild/ reinstall the package here,
 # or at least load_all()  ?
  
 # system.time({
@@ -604,16 +617,6 @@ system.time({
 ############################## # 
 
 
-######################################### #
-### datacreate_testpoints_testoutputs.R ####
-# rstudioapi::documentOpen("./data-raw/datacreate_testpoints_testoutputs.R")
-source_maybe("datacreate_testpoints_testoutputs.R")
-
- ######################################### #
- ### datacreate_testshapes_2.R ####
- # rstudioapi::documentOpen("./data-raw/datacreate_testshapes_2.R")
- source_maybe("datacreate_testshapes_2.R")
- 
  
 # ~------------------------------------------- ####
 ## related to ejscreenapi  ####

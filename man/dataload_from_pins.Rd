@@ -14,6 +14,7 @@ dataload_from_pins(
   justchecking = FALSE,
   ignorelocal = FALSE,
   silent = FALSE,
+  return_data_table = TRUE,
   onAttach = FALSE
 )
 }
@@ -40,6 +41,8 @@ look in for locally saved copies in case pins board is not reachable by user.}
 \item{ignorelocal}{set it to TRUE to avoid 1st checking local disk for copies of files}
 
 \item{silent}{set to TRUE to suppress cat() msgs to console}
+
+\item{return_data_table}{whether the \code{\link[=read_ipc_file]{read_ipc_file()}} should return a data.table (T, the default), or arrow (F). Passed to \code{\link[=dataload_from_local]{dataload_from_local()}}}
 
 \item{onAttach}{Indicates whether the function is being called from onAttach. IF so, it will download all arrow files if user cannot connect to PINS board}
 }

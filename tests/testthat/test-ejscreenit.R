@@ -2,12 +2,8 @@
 cat('\ntesting ejscreenit()\n')
 
 
-testradius = 1
-testlat <-  38.8959  # testpoints_50$lat[1]
-testlon <- -77.02985 # testpoints_50$lon[1]
-test2lat <- c(33.943883,    39.297209)
-test2lon <- c(-118.241073, -76.641674)
-pts <- data.frame(lat = test2lat, lon = test2lon)
+
+# pts <- data.frame(lat = test2lat, lon = test2lon)
 # 
 # outrest       <- ejscreenRESTbroker(lon = testlon, lat = testlat, radius = testradius)
 # outrest2table <- ejscreenRESTbroker2table(outrest, getstatefromplacename = TRUE)
@@ -16,14 +12,15 @@ pts <- data.frame(lat = test2lat, lon = test2lon)
 # brokerout <- try(ejscreenRESTbroker(lon = testpoints_5$lon[1], lat = testpoints_5$lat[1], radius = testradius))
 # missing_api_results <- inherits(brokerout, "try-error")
 
-suppressWarnings({
-  apinow_list <- ejscreenit(testpoints_5, radius = 1, nosave = T, nosee = T, interactiveprompt = F, calculate_ratios = T) # defaults to verbose=FALSE via ejscreenapi_plus() ?
-  apinow = apinow_list$table
-  apinow$timeSeconds <- NULL # these vary
-  apinow$`Seconds elapsed obtaining data` <- NULL
-})
+
+
 
 test_that("ejscreenit() works at all", {
+  testradius = 1
+  testlat <-  38.8959  # testpoints_50$lat[1]
+  testlon <- -77.02985 # testpoints_50$lon[1]
+  test2lat <- c(33.943883,    39.297209)
+  test2lon <- c(-118.241073, -76.641674)
   expect_no_error(  suppressMessages({
     suppressWarnings({
       junk <-  ejscreenit(testpoints_5[1:2, ], radius = 0.5, nosave = T, nosee = T, interactiveprompt = F,
@@ -33,6 +30,11 @@ test_that("ejscreenit() works at all", {
 })
 
 test_that('ejscreenit() does not crash for 2 points x= lons, y = lats', {
+  testradius = 1
+  testlat <-  38.8959  # testpoints_50$lat[1]
+  testlon <- -77.02985 # testpoints_50$lon[1]
+  test2lat <- c(33.943883,    39.297209)
+  test2lon <- c(-118.241073, -76.641674)
   expect_no_error({
     ## returns warnings about invalid sites throughout analysis, but no errors
     suppressWarnings({
@@ -45,34 +47,56 @@ test_that('ejscreenit() does not crash for 2 points x= lons, y = lats', {
 })
 
 test_that("ejscreenit() still returns list with names identical to what it used to return (saved as testoutput_ejscreenit_5)", {
-  
-  apinow_list2 <- ejscreenit(testpoints_5[1:2,], radius = 1, nosave = T, nosee = T, interactiveprompt = F, calculate_ratios = T) # defaults to verbose=FALSE via ejscreenapi_plus() ?
-  
+  testradius = 1
+  testlat <-  38.8959  # testpoints_50$lat[1]
+  testlon <- -77.02985 # testpoints_50$lon[1]
+  test2lat <- c(33.943883,    39.297209)
+  test2lon <- c(-118.241073, -76.641674)
+  apiref$`Seconds elapsed obtaining data` = NULL
+  apinow$`Seconds elapsed obtaining data` = NULL
   expect_identical(
     names(apiref_list),   #  "table" "map"   "plot" 
     names(apinow_list2)   #  "table" "map"   "plot" 
   )
 })
-test_that("ejscreenit() output still has table w same colnames as before (testoutput_ejscreenit_10pts_1miles$table)", {
+test_that("ejscreenit() still returns a list that includes a table with names identical to the one it used to return (saved as testoutput_ejscreenit_10pts_1miles$table)", {
+  testradius = 1
+  testlat <-  38.8959  # testpoints_50$lat[1]
+  testlon <- -77.02985 # testpoints_50$lon[1]
+  test2lat <- c(33.943883,    39.297209)
+  test2lon <- c(-118.241073, -76.641674)
+  apiref$`Seconds elapsed obtaining data` = NULL
+  apinow$`Seconds elapsed obtaining data` = NULL
   expect_identical(
     names(apiref),
     names(apinow)
   )
 })
-test_that("ejscreenit() output still has table w same col CLASSES as before (testoutput_ejscreenit_10pts_1miles$table)", {
+test_that("ejscreenit() still returns a list that includes a table with column classes identical to the ones it used to return (saved as testoutput_ejscreenit_10pts_1miles$table)", {
+  apiref$`Seconds elapsed obtaining data` = NULL
+  apinow$`Seconds elapsed obtaining data` = NULL
   expect_identical(
     sapply(apiref, class),
     sapply(apinow, class),ignore_attr = TRUE
   )
   # all.equal(apiref, apinow)
 })
-test_that("ejscreenit() output still returns same table contents as before", {
+test_that("ejscreenit() still returns identical table contents to what it used to", {
+  apiref$`Seconds elapsed obtaining data` = NULL
+  apinow$`Seconds elapsed obtaining data` = NULL
   expect_identical(
     apiref, 
     apinow, ignore_attr = TRUE
   )
 })
-test_that('ejscreenit() doesnt crash for 2 points, x=pts; list of 3 outputs of correct class. table right NROW', {
+test_that('ejscreenit() does not crash, for 2 points, x=pts; list of 3 outputs of correct class. table right NROW', {
+  testradius = 1
+  testlat <-  38.8959  # testpoints_50$lat[1]
+  testlon <- -77.02985 # testpoints_50$lon[1]
+  test2lat <- c(33.943883,    39.297209)
+  test2lon <- c(-118.241073, -76.641674)
+  apiref$`Seconds elapsed obtaining data` = NULL
+  apinow$`Seconds elapsed obtaining data` = NULL
   expect_no_error({
     suppressWarnings(
       suppressMessages({
