@@ -6,27 +6,37 @@
 # * https://r-pkgs.org/tests.html
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
-# make sure to install the latest version of the app
-library(devtools)
-devtools::install_local('.',force=T)
+# make sure to install the latest version of the app using your checked out branch's code
+# devtools doesn't seem to work with GHA
+library(remotes)
+remotes::install_local('.',force=T)
 
-# quaddata and localtree seem to sometimes not get set after install 
-# which causes the app to crash upon running the analysis
-if(!exists("quaddata")) {
-  EJAM:::dataload_from_local(varnames = "quaddata")
-}
-localtree <- SearchTrees::createTree( quaddata, treeType = "quad", dataType = "point")
-
+library(EJAM)
 library(shinytest2)
 library(testthat)
-library(EJAM)
+
+# shinytest2 sometimes failing to take screenshots because they are copied into the global tmp directory
+# unixtools::set.tempdir('~/tmp')
 
 # this is the main function that does the test commands
 source("tests/app-functionality.R")
-
-# filter to only shiny tests
+testthat::set_max_fails(100)
 # test_check("EJAM") # this runs all the tests
-test_app(".", filter="shiny-functionality")
+# "functionality" filter to only shiny tests because they're all named with 'functionality'
+# filter="FIPS-functionality" would filter to just the FIPS shinytest
+test_app(".", filter="-functionality")
+
+# If you want to create a new test
+# shinytest2::record_test(".")
+
+# When tests fail, run this to review diffs
+# snapshot_review()
+# Run this to review specific files
+# testthat::snapshot_review(files="latlon-functionality/latlon-pctlowinc.json")
+# To accept the new snapshots
+# snapshot_accept()
+
+
 # This is what ensures tests are run during  R CMD check,
 #   which you can start via  check() (i.e., build then do ⁠R CMD check)
 # check() automatically builds and checks a source package, using all known best practices. 

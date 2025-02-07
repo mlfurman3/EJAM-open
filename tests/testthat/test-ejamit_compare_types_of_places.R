@@ -56,11 +56,16 @@ test_that("works if only 1 point", {
   pts1 <- data.frame(testpoints_10[1,])
   
   expect_no_error({
-  junk <- capture_output({
-    out <- ejamit_compare_types_of_places(pts1, typeofsite = 'A')   
+    junk <- capture_output({
+      out <- ejamit_compare_types_of_places(pts1, typeofsite = 'A')   
+    })
   })
-  })
-  
+  expect_equal(names(out),
+               c("types", "sitecount_bytype", "results_bytype", "results_overall", 
+                 "ejam_uniq_id", "typeofsite", "results_bysite", "longnames", 
+                 "validstats", "ratiostats")
+               )
+  expect_equal(NROW(out$results_bysite), 1)
   
 })
 ############################################################ #

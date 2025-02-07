@@ -78,7 +78,7 @@ acs_bybg <- function(
     cache_table = FALSE,
     year = 2022,
     output = "wide",
-    state = EJAM::stateinfo$ST, # state.abb would lack DC and PR
+    state = stateinfo$ST, # has DC,PR, but not "AS" "GU" "MP" "UM" "VI" # state.abb from datasets pkg would lack DC and PR # stateinfo2 would add "US"
     county = NULL,
     zcta = NULL,
     geometry = FALSE,
@@ -152,8 +152,8 @@ acs_bybg <- function(
 # # print(x[grepl("b01001_", x$name, ignore.case = T) & grepl("Female", x$label) & grepl("group", x$geography), ], n = 25)
 # allstates <- list()
 # 
-# for (i in 1:length(state.abb)) {
-#   MYST <- state.abb[i]
+# for (i in 1:length(stateinfo$ST)) {  # but it may not work for DC and PR ?
+#   MYST <- stateinfo$ST[i]
 #   y <- get_acs(geography = "block group",  output = "tidy",
 #                variables = c(
 #                  "B01001_001", paste0("B01001_0", 31:39)), 

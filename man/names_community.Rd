@@ -5,7 +5,7 @@
 \alias{names_community}
 \title{a list of variable names for internal use in EJAM}
 \format{
-An object of class \code{character} of length 7.
+An object of class \code{character} of length 6.
 }
 \usage{
 names_community

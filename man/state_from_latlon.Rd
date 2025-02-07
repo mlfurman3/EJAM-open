@@ -17,6 +17,8 @@ as many rows as elements in lat or lon
 }
 \description{
 Takes 3 seconds to find state for 1k points, so a faster alternative would be useful
+It can take approx. one minute for 2.5 million points
+as in state_from_latlon(frs$lat, frs$lon)
 }
 \examples{
  myprogram <- "CAMDBS" # 739 sites

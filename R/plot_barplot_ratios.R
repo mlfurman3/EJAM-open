@@ -120,7 +120,7 @@ plot_barplot_ratios_ez = function(out, varnames = c(names_d_ratio_to_avg, names_
 #' @export
 plot_barplot_ratios <- function(ratio.to.us.d.overall,
                                 shortlabels = NULL,
-                                mycolorsavailable=c("gray", "yellow", "orange", "red"),
+                                mycolorsavailable=c( "gray","yellow","orange","red"),
                                 main = "Demographics at the Analyzed Locations Compared to US Overall") {
   
   ########################################################## #
@@ -169,7 +169,9 @@ plot_barplot_ratios <- function(ratio.to.us.d.overall,
   # }
   if (is.null(shortlabels)) {
     shortlabels <- fixcolnames(names(ratio.to.us.d.overall), oldtype = "r", newtype = "shortlabel")
-    supershortnames <- gsub(' \\(.*', '', gsub("People of Color","POC", shortlabels))
+    shortlabels <- gsub("^Ratio to US avg", "", shortlabels)  # Remove the prefix
+    shortlabels <- gsub("^Ratio to State avg", "", shortlabels)  # Remove the prefix
+    supershortnames <- gsub(' \\(.*', '', gsub("People of Color", "POC", shortlabels))
     names(ratio.to.us.d.overall) <- supershortnames
   }
     names(ratio.to.us.d.overall) <- shortlabels
@@ -185,48 +187,57 @@ plot_barplot_ratios <- function(ratio.to.us.d.overall,
   #         col = mycolors)
   # abline(h=1, col="gray")
 
-thisdata <-  data.frame(name = names(ratio.to.us.d.overall),
+thisdata <-  data.frame(name = factor(names(ratio.to.us.d.overall),levels=names(ratio.to.us.d.overall)),
              value = ratio.to.us.d.overall,
              color =  factor(
                mycolors,
-               levels = c("gray", "yellow", "orange", "red") #Set corect order from least to most
+               levels = c( "red","orange","yellow","gray") #Set correct order from least to most
              )) %>%
     ## drop any indicators with Inf or NaNs
     dplyr::filter(is.finite(value))
 
+
 thisdata$name <- factor(thisdata$name) # factor(thisdata$name, levels = thisdata$name)
 
 #Dynamically generate the color legend based on title
+if(isTRUE(getOption("shiny.testmode"))) {
+  set.seed(12345)
+}
 if (grepl("State", main, ignore.case = TRUE)) {
   color_labels <- c(
-    "gray" = "Below State Average",
-    "yellow" = "1-2x State Average",
+    "red" = "At least 3x State Average",
     "orange" = "2-3x State Average",
-    "red" = "At least 3x State Average"
+    "yellow" = "1-2x State Average",
+    "gray" = "Below State Average"
   )
   legendTitle <- "Ratio vs State Average"
 } else {
   color_labels <- c(
-    "gray" = "Below US Average",
-    "yellow" = "1-2x US Average",
+    "red" = "At least 3x US Average",
     "orange" = "2-3x US Average",
-    "red" = "At least 3x US Average"
+    "yellow" = "1-2x US Average",
+    "gray" = "Below US Average"
   )
   legendTitle <- "Ratio vs US Average"
 }
 
 thisplot <- thisdata %>%
     ggplot2::ggplot(ggplot2::aes(x = name, y = value, fill = color)) +
-    ggplot2::geom_bar(stat = 'identity') +
+    ggplot2::geom_bar(stat = 'identity', show.legend = TRUE) +
     ## Legend for colors of bars
     ggplot2::scale_fill_manual(
       values = setNames(mycolorsavailable, mycolorsavailable),
       labels = color_labels,
-      name = legendTitle
+      name = legendTitle,
+      drop = FALSE
     ) +
     ggplot2::theme_bw() +
-    ggplot2::labs(x = NULL, y = 'Ratio vs. Average', #fill = 'Legend',
-                  title = main) +
+    ggplot2::labs(
+    x = NULL,
+    y = "Ratio vs. Average",
+    title = main,
+    caption = "NH = \"non-Hispanic\"\nNHA = \"non-Hispanic alone, aka single race\""
+   ) +
     #scale_x_discrete(labels = scales::label_wrap(7)) +    # requires scales package
     #scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
     #scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
@@ -235,13 +246,14 @@ thisplot <- thisdata %>%
   ggplot2::geom_hline(ggplot2::aes(yintercept = 1)) +
 
     ggplot2::scale_y_continuous(limits = c(0, NA), expand = ggplot2::expansion(mult = c(0, 0.05), add = c(0, 0))) +
-    ggplot2::theme(plot.margin = ggplot2::unit(c(20,100,20,20), "points"),
-                   plot.title = ggplot2::element_text(size = 14, hjust = 0.5),
-                   axis.text.x = ggplot2::element_text(size = 10 , angle = -30, hjust = 0, vjust = 1),
-                   legend.title = ggplot2::element_text(size = 12),  
-                   legend.text = ggplot2::element_text(size = 10)   
-                   ) + #
-    NULL
+  ggplot2::theme(
+    plot.title = ggplot2::element_text(size = 14, hjust = 0.5),
+    axis.text.x = ggplot2::element_text(size = 9, angle = 45, hjust = 1, vjust = 1), 
+    legend.title = ggplot2::element_text(size = 12),
+    legend.text = ggplot2::element_text(size = 10),
+    legend.position = "bottom"
+  )
+
 
 return(thisplot)
 

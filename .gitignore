@@ -59,3 +59,5 @@ packrat/lib*/
 # docs
 
 
+/shiny_bookmarks
+tests/testthat/_snaps/**/*.png

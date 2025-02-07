@@ -69,6 +69,8 @@ urls_clusters_and_sort_cols <- function(results_table) {
 
   if ("areaid" %in% names(results_table)) {
     areaid   <- results_table$areaid
+    lat = NULL
+    lon = NULL
   } else {
     lon = results_table$lon
     lat = results_table$lat
@@ -94,7 +96,7 @@ urls_clusters_and_sort_cols <- function(results_table) {
   
   ## 2. EJSCREEN MAP URL = mapurl ####
   if (!all(areaid == '')) {
-     mapurl <- url_ejscreenmap(wherestr = fips2name(fips) )  # e.g.,  "https://ejscreen.epa.gov/mapper/index.html?wherestr=35.3827475,-86.2464592"
+     mapurl <- url_ejscreenmap(wherestr = fips2name(areaid) )  # e.g.,  "https://ejscreen.epa.gov/mapper/index.html?wherestr=35.3827475,-86.2464592"
   } else {
     mapurl <- url_ejscreenmap(lat = lat, lon = lon  )  # e.g.,  "https://ejscreen.epa.gov/mapper/index.html?wherestr=35.3827475,-86.2464592"
   }
@@ -256,6 +258,16 @@ url_xl_style <- function(urls, urltext = urls) {
 #' @param mobile If TRUE, provides URL for the mobile browser version, not desktop version
 #' @param areatype passed as areatype= in API, inferred if not provided but areaid is provided
 #' @param areaid fips codes if used,  passed as areaid=  in API, can be FIPS for blockgroups, tracts, counties.
+#'   Not zip code! For example, "10001" will report on that county, not that zip code.
+#'   Note that nearly half of all county fips codes are impossible to distinguish from 
+#'   5-digit zipcodes because the same numbers are used for both purposes.
+#'   
+#'   For county FIPS 10001, use `url_ejscreen_report(areaid =  '10001')`
+#'   
+#'   For zipcode 10001, you cannot use `url_ejscreen_report()` for zip codes
+#'    since the API does not support zip codes.
+#'   You can still at least try `url_ejscreenmap(wherestr =  '10001')`
+#'   
 #' @param namestr The character string text to show on the report as the name of the place
 #' @param shapefile not implemented
 #' @param wkid default is 4326 -WGS84 - World Geodetic System 1984, used in GPS - see (https://epsg.io/4326)
@@ -394,7 +406,14 @@ url_ejscreen_acs_report <- function(lon, lat, radius, as_html=FALSE, linktext) {
 #' @param as_html Whether to return as just the urls or as html hyperlinks to use in a DT::datatable() for example
 #' @param linktext used as text for hyperlinks, if supplied and as_html=TRUE
 #' @param wherestr Name of place to center on (not FIPS code!).
-#'   Passed to API in URL as wherestr= , if lat/lon not used.
+#'   Note that nearly half of all county fips codes are impossible to distinguish from 
+#'   5-digit zipcodes because the same numbers are used for both purposes.
+#'   
+#'   For zipcode 10001, use url_ejscreenmap(wherestr =  '10001')
+#'   
+#'   For County FIPS code 10001, use url_ejscreenmap(wherestr =  fips2name('10001'))
+#'   
+#'   This parameter is passed to the API as wherestr= , if lat/lon not specified.
 #'   Can be State abbrev like "NY" or full state name,
 #'   or city like "New Rochelle, NY" as from fips2name() -- using fips2name()
 #'   works for state, county, or city FIPS code converted to name.

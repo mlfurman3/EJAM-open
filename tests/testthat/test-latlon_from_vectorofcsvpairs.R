@@ -52,18 +52,21 @@ testthat::test_that("latlon_from_vectorofcsvpairs works for good data", {
 ################# #
 
 testthat::test_that("can handle NA as a lat,lon pair", {
-  x_na1 = NA
+  x_na1 = NA_integer_
   x_na2 = c("30,-83","32.5,-86.377325", NA)
   x_na3 = c(NA,NA)
   testthat::expect_no_error({
-    latlon_from_vectorofcsvpairs(x_na1)
+    x1 = latlon_from_vectorofcsvpairs(x_na1)
   })
+  expect_equal(x1, data.frame(lat = NA_integer_, lon = NA_integer_)) # the type of NA changes via the function
   testthat::expect_no_error({
-    latlon_from_vectorofcsvpairs(x_na2)
+    x2 = latlon_from_vectorofcsvpairs(x_na2)
   })
+  expect_equal(x2, data.frame(lat = c(30.0, 32.5,   NA),  lon = c(-83.00000, -86.377325,        NA)))
   testthat::expect_no_error({
-    latlon_from_vectorofcsvpairs(x_na3)
+    x3 = latlon_from_vectorofcsvpairs(x_na3)
   })
+  expect_true(all(is.na(x3$lat)) & all(is.na(x3$lon)))
 })
 
 ########################################################## #

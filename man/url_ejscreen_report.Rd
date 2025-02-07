@@ -36,7 +36,16 @@ url_ejscreen_report(
 
 \item{areatype}{passed as areatype= in API, inferred if not provided but areaid is provided}
 
-\item{areaid}{fips codes if used,  passed as areaid=  in API, can be FIPS for blockgroups, tracts, counties.}
+\item{areaid}{fips codes if used,  passed as areaid=  in API, can be FIPS for blockgroups, tracts, counties.
+Not zip code! For example, "10001" will report on that county, not that zip code.
+Note that nearly half of all county fips codes are impossible to distinguish from
+5-digit zipcodes because the same numbers are used for both purposes.
+
+For county FIPS 10001, use \code{url_ejscreen_report(areaid =  '10001')}
+
+For zipcode 10001, you cannot use \code{url_ejscreen_report()} for zip codes
+since the API does not support zip codes.
+You can still at least try \code{url_ejscreenmap(wherestr =  '10001')}}
 
 \item{namestr}{The character string text to show on the report as the name of the place}
 

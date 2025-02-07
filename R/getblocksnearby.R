@@ -36,12 +36,13 @@
 #'
 #' @export
 #'
-getblocksnearby  <- function(sitepoints, radius=3, maxradius=31.07, radius_donut_lower_edge=0,
-                             avoidorphans=FALSE,
+getblocksnearby  <- function(sitepoints, radius = 3, maxradius = 31.07, radius_donut_lower_edge = 0,
+                             avoidorphans = FALSE,
                              # indexgridsize,
-                             quadtree = NULL,
-                             quiet=FALSE,
-                             parallel=FALSE,
+                             quadtree = NULL, 
+                             quaddatatable = NULL,
+                             quiet = FALSE,
+                             parallel = FALSE,
                              use_unadjusted_distance = TRUE,
                              # a new approach that just uses the distance between site and block when determining which blocks (residents) are within radius
                              # relevant if a block is huge relative to the radius or a block contains a site
@@ -74,6 +75,9 @@ getblocksnearby  <- function(sitepoints, radius=3, maxradius=31.07, radius_donut
   # But ok if any/orall lat and/or lon are NA values
 
   ################################################################################## #
+  
+  # if (is.null(quaddatatable)) {quaddatatable <- quaddata} #?
+  
   # timed <- system.time({
   if (missing(quadtree)) {
     if (exists("localtree")) {
@@ -108,7 +112,9 @@ getblocksnearby  <- function(sitepoints, radius=3, maxradius=31.07, radius_donut
                                     avoidorphans = avoidorphans,
                                     use_unadjusted_distance = use_unadjusted_distance,
                                     # indexgridsize = indexgridsize,
-                                    quadtree = quadtree, quiet = quiet,
+                                    quadtree = quadtree, 
+                                    #quaddatatable = quaddatatable,
+                                    quiet = quiet,
                                     ...)
   } else {
     if (shiny::isRunning()) {
@@ -123,6 +129,7 @@ getblocksnearby  <- function(sitepoints, radius=3, maxradius=31.07, radius_donut
                                               avoidorphans = avoidorphans,
                                               # indexgridsize = indexgridsize,
                                               quadtree = quadtree,
+                                              # quaddatatable = quaddatatable,
                                               ...)
   }
 

@@ -54,10 +54,10 @@ length(fips2state_abbrev(rownames(table(substr(bgid2fips$bgfips,1,2)))))
 ## [1] "AK" "AL" "AR" "AZ" "CA" "CO" "CT"   "DC"   "DE" "FL" "GA" "HI" "IA" "ID" "IL" "IN" "KS" "KY" "LA"
 ## [20] "MA" "MD" "ME" "MI" "MN" "MO" "MS" "MT" "NC" "ND" "NE" "NH" "NJ" "NM" "NV" "NY" "OH" "OK" "OR"
 ## [39] "PA"   "PR"   "RI" "SC" "SD" "TN" "TX" "UT" "VA" "VT" "WA" "WI" "WV" "WY"
-# setdiff(names(stcounts), state.abb)
-## [1] "DC" "PR"
+# setdiff(names(stcounts), stateinfo$ST)
+## same
 # 
-## if using downloaded file though,
+## if using downloaded file,
 ## PR, but not "AS" "GU" "MP" "VI", were found in downloaded census2020 block table ***
 
 ############################################# # 

@@ -116,7 +116,7 @@ at each site. (see default)}
 
 \item{in_shiny}{if fips parameter is used, passed to \code{\link[=getblocksnearby_from_fips]{getblocksnearby_from_fips()}}}
 
-\item{quiet}{Optional. set to TRUE to avoid message about using \code{\link[=getblocks_diagnostics]{getblocks_diagnostics()}},
+\item{quiet}{Optional. passed to getblocksnearby() and batch.summarize(). set to TRUE to avoid message about using \code{\link[=getblocks_diagnostics]{getblocks_diagnostics()}},
 which is relevant only if a user saved the output of this function.}
 
 \item{parallel}{whether to use parallel processing in \code{\link[=getblocksnearby]{getblocksnearby()}}, but not implemented yet.}
@@ -127,21 +127,43 @@ passed to \code{\link[=doaggregate]{doaggregate()}} also. app server sets this t
 
 \item{called_by_ejamit}{Set to TRUE by \code{\link[=ejamit]{ejamit()}} to suppress some outputs even if ejamit(silentinteractive=F)}
 
-\item{testing}{used while testing this function}
+\item{testing}{used while testing this function, passed to doaggregate()}
 
 \item{...}{passed to \code{\link[=getblocksnearby]{getblocksnearby()}} etc. such as  report_progress_every_n = 0}
 }
 \value{
-A list of tables of results:
+This returns a named list of results.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{# To see the structure of the outputs of ejamit() 
+structure.of.output.list(testoutput_ejamit_10pts_1miles)
+dim(testoutput_ejamit_10pts_1miles$results_summarized$keystats)
+dim(testoutput_ejamit_10pts_1miles$results_summarized$rows)
+dim(testoutput_ejamit_10pts_1miles$results_summarized$cols)
+dim(testoutput_ejamit_10pts_1miles$results_summarized$keyindicators)
+}\if{html}{\out{</div>}}
 \itemize{
 \item \strong{results_overall}  a data.table with one row that provides the summary across all sites, the aggregated results for all unique residents.
 \item \strong{results_bysite}   results for individual sites (buffers) - a data.table of results,
 one row per ejam_uniq_id (i.e., each site analyzed), one column per indicator
 \item \strong{results_bybg_people}  results for each block group, to allow for showing the distribution of each
-indicator across everyone within each demographic group.
+indicator across everyone, including the distribution within a single demographic group, for example.
 \item \strong{longnames}  descriptive long names for the indicators in the above outputs
 \item \strong{count_of_blocks_near_multiple_sites}  additional detail
 \item \strong{sitetype} indicates if analysis used latlon, fips, or shp
+\item \strong{results_summarized} named list with "rows", "cols", "keystats", "keyindicators",
+each providing additional summary stats.
+Each is a data.frame except x$results_summarized$keystats is a matrix/array.
+\itemize{
+\item x$results_summarized$cols provides, at each site,
+the count of EJ Indexes at or above a threshold like the 80th percentile.
+\item x$results_summarized$keyindicators provides summary stats for a handful of indicators.
+\item x$results_summarized$keystats provides, for each indicator, the average
+across all sites and average across all (unique) residents, one row per indicator (a "tall" format).
+\item x$results_summarized$rows provides the same, but as one column per indicator,
+corresponding to the format used in results_bysite or results_overall.
+}
+\item \strong{formatted} another tall format showing averages for all indicators
+\item \strong{sitetype} the type of analysis done: "latlon", "shp", "fips", etc.
 }
 }
 \description{

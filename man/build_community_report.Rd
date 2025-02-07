@@ -6,28 +6,54 @@
 \usage{
 build_community_report(
   output_df,
-  analysis_title,
+  analysis_title = "Report",
   totalpop,
   locationstr,
   include_ejindexes = FALSE,
   in_shiny = FALSE,
-  filename = NULL
+  filename = NULL,
+  show_ratios_in_report = FALSE,
+  extratable_show_ratios_in_report = FALSE,
+  extratable_title = "EJScreen environmental and socioeconomic indicators data",
+  extratable_list_of_sections = list(`Breakdown by Race/Ethnicity` = names_d_subgroups,
+    `Language Spoken at Home` = names_d_language,
+    `Language in Limited English Speaking Households` = names_d_languageli,
+    `Breakdown by Sex` = c("pctmale", "pctfemale"), Health = names_health, Community =
+    names_community[!(names_community \%in\% c("pctmale", "pctfemale",
+    "pctownedunits_dupe"))], Poverty = names_d_extra),
+  extratable_hide_missing_rows_for = c(names_d_language, names_health)
 )
 }
 \arguments{
-\item{output_df, }{single row of results table from doaggregate - either results_overall or one row of bysite}
+\item{output_df}{single row of results table from doaggregate - either results_overall or one row of bysite}
 
-\item{analysis_title, }{title to use in header of report}
+\item{analysis_title}{title to use in header of report}
 
-\item{totalpop, }{total population included in location(s) analyzed}
+\item{totalpop}{total population included in location(s) analyzed}
 
-\item{locationstr, }{description of the location(s) analyzed}
+\item{locationstr}{description of the location(s) analyzed}
 
-\item{include_ejindexes, }{whether to build tables for EJ and EJ supp. indexes}
+\item{include_ejindexes}{whether to build tables for EJ and EJ supp. indexes}
 
-\item{in_shiny, }{whether the function is being called in or outside of shiny - affects location of header}
+\item{in_shiny}{whether the function is being called in or outside of shiny - affects location of header}
 
-\item{filename, }{path to file to save HTML content to; if null, returns as string (used in Shiny app)}
+\item{filename}{path to file to save HTML content to; if null, returns as string (used in Shiny app)}
+
+\item{show_ratios_in_report}{logical, whether to add columns with ratios to US and State overall values, in main table of envt/demog. info.}
+
+\item{extratable_show_ratios_in_report}{logical, whether to add columns with ratios to US and State overall values, in extra table of demog. subgroups, etc.}
+
+\item{extratable_title}{Text of overall title of report table, in extra table of demog. subgroups, etc.}
+
+\item{extratable_list_of_sections}{This defines what extra indicators are shown.
+It is a named list of vectors,
+where each name is text phrase that is title of a section of the table,
+and each vector is the vector of colnames of output_df that are indicators
+to show in that section, in extra table of demog. subgroups, etc.}
+
+\item{extratable_hide_missing_rows_for}{only for the indicators named in this vector,
+leave out rows in table where raw value is NA,
+as with many of names_d_language, in extra table of demog. subgroups, etc.'}
 }
 \description{
 Creates a 2 page report on overall results or for one site, with demographic and environmental indicators, and EJ Indexes if needed.
@@ -40,5 +66,8 @@ This function gets called by
 app_server,
 ejam2report(), and
 community_report_template.Rmd
+}
+\seealso{
+\code{\link[=ejam2report]{ejam2report()}}
 }
 \keyword{internal}

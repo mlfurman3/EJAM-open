@@ -4,11 +4,19 @@
 \alias{fill_tbl_full}
 \title{Create full demog. or envt. HTML table of indicator rows}
 \usage{
-fill_tbl_full(output_df)
+fill_tbl_full(
+  output_df,
+  title = "EJScreen environmental and socioeconomic indicators data",
+  show_ratios_in_report = TRUE
+)
 }
 \arguments{
 \item{output_df, }{single row of results table from doaggregate -
 either results_overall or one row of bysite}
+
+\item{title}{Text of overall title of report table}
+
+\item{show_ratios_in_report}{logical, whether to add columns with ratios to US and State overall values}
 }
 \description{
 Create full demog. or envt. HTML table of indicator rows

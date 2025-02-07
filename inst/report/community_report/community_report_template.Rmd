@@ -13,6 +13,8 @@ params:
   filename: NULL
   map: NA
   summary_plot: NA
+  show_ratios_in_report: NA
+  extratable_show_ratios_in_report: NA
 ---
 
 ```{r, echo=FALSE}
@@ -21,7 +23,8 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
 ```{r build_community_report}
 
-library(EJAM)
+library(EJAM) # library call here would override developer having just done load_all
+cat('doing library(EJAM)\n')
 
 build_community_report(
   output_df = params$output_df,
@@ -29,8 +32,11 @@ build_community_report(
   totalpop = params$totalpop,
   locationstr = params$locationstr,
   include_ejindexes = params$include_ejindexes,
-  in_shiny = params$in_shiny,
-  filename = params$filename
+  filename = params$filename,
+  show_ratios_in_report = params$show_ratios_in_report,
+  extratable_show_ratios_in_report = params$extratable_show_ratios_in_report,
+  in_shiny = params$in_shiny
+  # note additional params now available
 )
 ```
 

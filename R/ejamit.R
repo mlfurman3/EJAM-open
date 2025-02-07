@@ -60,17 +60,25 @@
 #' @param updateProgress progress bar function passed to [doaggregate()] in shiny app
 #' @param updateProgress_getblocks progress bar function passed to [getblocksnearby()] in shiny app
 #' @param in_shiny if fips parameter is used, passed to [getblocksnearby_from_fips()]
-#' @param quiet Optional. set to TRUE to avoid message about using [getblocks_diagnostics()],
+#' @param quiet Optional. passed to getblocksnearby() and batch.summarize(). set to TRUE to avoid message about using [getblocks_diagnostics()],
 #'   which is relevant only if a user saved the output of this function.
 #' @param parallel whether to use parallel processing in [getblocksnearby()], but not implemented yet.
 #' @param silentinteractive   to prevent long output showing in console in RStudio when in interactive mode,
 #'   passed to [doaggregate()] also. app server sets this to TRUE when calling doaggregate() but
 #'   [ejamit()] default is to set this to FALSE when calling [doaggregate()].
 #' @param called_by_ejamit Set to TRUE by [ejamit()] to suppress some outputs even if ejamit(silentinteractive=F)
-#' @param testing used while testing this function
+#' @param testing used while testing this function, passed to doaggregate()
 #' @param ... passed to [getblocksnearby()] etc. such as  report_progress_every_n = 0
 #' 
-#' @return A list of tables of results:
+#' @return This returns a named list of results.
+#' ```
+#' # To see the structure of the outputs of ejamit() 
+#' structure.of.output.list(testoutput_ejamit_10pts_1miles)
+#' dim(testoutput_ejamit_10pts_1miles$results_summarized$keystats)
+#' dim(testoutput_ejamit_10pts_1miles$results_summarized$rows)
+#' dim(testoutput_ejamit_10pts_1miles$results_summarized$cols)
+#' dim(testoutput_ejamit_10pts_1miles$results_summarized$keyindicators)
+#' ```
 #' 
 #'   * **results_overall**  a data.table with one row that provides the summary across all sites, the aggregated results for all unique residents.
 #'
@@ -78,7 +86,7 @@
 #'     one row per ejam_uniq_id (i.e., each site analyzed), one column per indicator
 #'
 #'   * **results_bybg_people**  results for each block group, to allow for showing the distribution of each
-#'      indicator across everyone within each demographic group.
+#'      indicator across everyone, including the distribution within a single demographic group, for example.
 #'
 #'   * **longnames**  descriptive long names for the indicators in the above outputs
 #'
@@ -86,6 +94,25 @@
 #'
 #'   * **sitetype** indicates if analysis used latlon, fips, or shp
 #'   
+#'   * **results_summarized** named list with "rows", "cols", "keystats", "keyindicators",
+#'     each providing additional summary stats. 
+#'     Each is a data.frame except x$results_summarized$keystats is a matrix/array.
+#'     
+#'     - x$results_summarized$cols provides, at each site, 
+#'     the count of EJ Indexes at or above a threshold like the 80th percentile.
+#'     
+#'     - x$results_summarized$keyindicators provides summary stats for a handful of indicators.
+#'     
+#'     - x$results_summarized$keystats provides, for each indicator, the average 
+#'     across all sites and average across all (unique) residents, one row per indicator (a "tall" format).
+#'     
+#'     - x$results_summarized$rows provides the same, but as one column per indicator,
+#'     corresponding to the format used in results_bysite or results_overall.
+#'     
+#'   * **formatted** another tall format showing averages for all indicators
+#'   
+#'   * **sitetype** the type of analysis done: "latlon", "shp", "fips", etc.
+#'        
 #' @examples
 #' 
 #' # See examples in vignettes/ articles at https://usepa.github.io/EJAM/index.html
@@ -275,6 +302,8 @@ ejamit <- function(sitepoints,
   } # end shp type
   ######################## #
   
+  # * FIPS  ####
+  
   if (sitetype == "fips") {
     
     # * FIPS  ####
@@ -317,7 +346,7 @@ ejamit <- function(sitepoints,
     # no lat,lon columns,
     # and otherwise same outputs as getblocksnearby()
     
-    ## . doaggregate  fips ####
+    # . doaggregate  fips ####
     
     if (!silentinteractive) {cat('Aggregating at each FIPS Census unit and overall.\n')}
     # sites2states_or_latlon 
@@ -353,10 +382,10 @@ ejamit <- function(sitepoints,
   } # end fips type
   ######################## #
   
-  if (sitetype == "latlon") {
+  # * LAT/LON POINTS ####
     
-    # * LAT/LON POINTS ####
-    
+    if (sitetype == "latlon") {
+
     ## . getblocksnearby() ####
 
     ################################################################################## #
@@ -373,7 +402,7 @@ ejamit <- function(sitepoints,
     
     # Here are preserved ALL rows (pts) including invalid ones
     # print(sitepoints)
-    data_uploaded <- sitepoints[, c("ejam_uniq_id", "lat", "lon", "valid", "invalid_msg" )] # invalids here were not passed to getblock... but some valids here might not return from getblock.. so this distinguishes where it was dropped 
+    data_uploaded <- sitepoints[, c("ejam_uniq_id", "lat", "lon", "valid", "invalid_msg" )] # invalids here were not passed to getblock.. but some valids here might not return from getblock.. so this distinguishes where it was dropped 
     data_uploaded <- data.frame(data_uploaded) # not data.table
     
     # Here are only valid points
@@ -421,7 +450,7 @@ ejamit <- function(sitepoints,
     )
     ################################################################################## #
     
-    ## . doaggregate pts ####
+    # . doaggregate pts ####
     
     if (!silentinteractive) {cat('Aggregating at each site and overall.\n')}
     
@@ -461,8 +490,8 @@ ejamit <- function(sitepoints,
 
   #     latlon, shp, fips handled the same way here
   
-  # Add rows with invalid sites that were dropped before getblocks...
-  # Flag as invalid other cases (dropped by getblocks... or by doaggregate, or had no results)
+  # Add rows with invalid sites that were dropped before getblocks..
+  # Flag as invalid other cases (dropped by getblocks.. or by doaggregate, or had no results)
   # Say why, in invalid_msg column
   
   # data_uploaded is a data.frame, all rows including invalid, cols = ejam_uniq_id, valid, invalid_msg, done for latlon, fips, and shp cases.
@@ -499,15 +528,17 @@ ejamit <- function(sitepoints,
                               out$results_bysite,
                               by = 'ejam_uniq_id', all = T)
   setorder(out$results_bysite, ejam_uniq_id)
-  
 
-  out$results_overall$valid <- TRUE
+  out$results_overall$valid <- TRUE # needs to be TRUE for some functions like ejam2report() ? or  sum(out$results_bysite$valid, na.rm = T)
   out$results_overall$invalid_msg <- ""
   if (!setequal(names(out$results_overall), names(out$results_bysite))) {stop('column names in bysite and overall do not match')}
   setcolorder(out$results_overall, names(out$results_bysite))
   
   out$longnames <- fixcolnames(names(out$results_bysite), 'r', 'long') # or try to sort c(fixcolnames(c("valid", "invalid_msg"), 'r', 'long'), out$longnames)
 
+  ## see out$results_summarized$keystats
+  ## see structure.of.output.list(out$results_summarized)
+  ## see results_bybg_people  has only a subset so already does not match colnames
   ################################################################ #
   
   # * Hyperlinks ####
@@ -598,7 +629,7 @@ ejamit <- function(sitepoints,
     # popstats =  data.frame(out$results_bysite), # now does not have to get passed twice
     quiet = quiet,
     ## user-selected quantiles to use
-    #probs = as.numeric(input$an_list_pctiles),
+    #probs = as.numeric(input$an_list_pctiles), # probs = c(0, 0.25, 0.5, 0.75, 0.8, 0.9, 0.95, 0.99, 1)
     thresholds = thresholds, # list(90, 90),
     threshnames = threshnames, # list(c(names_ej_pctile, names_ej_state_pctile), c(names_ej_supp_pctile, names_ej_supp_state_pctile)),
     threshgroups = threshgroups # list("EJ-US-or-ST", "Supp-US-or-ST")

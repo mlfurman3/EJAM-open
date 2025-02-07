@@ -6,6 +6,7 @@
 #' 
 #' @details This relies on [build_community_report()] as used in web app
 #'   for viewing report on 1 site from a list of sites.
+#'   You can customize the report somewhat by using parameters like extratable_list_of_sections
 #' @param ejamitout output as from [ejamit()], list with a data.table called `results_bysite`
 #'   if sitenumber parameter is used, or a data.table called `results_overall` otherwise
 #' @param sitenumber If a number is provided, the report is about 
@@ -16,6 +17,21 @@
 #' @param data_up_shp not implemented yet, for upload method SHP
 #' @param launch_browser set TRUE to have it launch browser and show report.
 #' @param return_html set TRUE to have function return HTML object instead of URL of local file
+#' 
+#' @param show_ratios_in_report logical, whether to add columns with ratios to US and State overall values, in main table of envt/demog. info.
+#' @param extratable_show_ratios_in_report logical, whether to add columns with ratios to US and State overall values, in extra table of demog. subgroups, etc.
+#' 
+#' @param extratable_title Text of overall title of report table, in extra table of demog. subgroups, etc.
+#' 
+#' @param extratable_list_of_sections This defines what extra indicators are shown. 
+#'   It is a named list of vectors, 
+#'   where each name is text phrase that is title of a section of the table,
+#'   and each vector is the vector of colnames of output_df that are indicators 
+#'   to show in that section, in extra table of demog. subgroups, etc.
+#'   
+#' @param extratable_hide_missing_rows_for only for the indicators named in this vector, 
+#'   leave out rows in table where raw value is NA, 
+#'   as with many of names_d_language, in extra table of demog. subgroups, etc.' #' 
 #' @return URL of temp html file or object depending on return_html,
 #'    and has side effect of launching browser to view it depending on return_html
 #'
@@ -35,11 +51,27 @@
 #' 
 ejam2report <- function(ejamitout = testoutput_ejamit_10pts_1miles, 
                         sitenumber = NULL,  
-                        analysis_title = "EJAM Report", 
+                        analysis_title = 'Summary of EJ Analysis', 
                         submitted_upload_method = c("latlon", "SHP", "FIPS")[1],
                         data_up_shp = NA,
                         return_html = FALSE, 
-                        launch_browser = TRUE) {
+                        launch_browser = TRUE,
+                        show_ratios_in_report = TRUE,
+                        
+                        extratable_show_ratios_in_report = TRUE,
+                        extratable_title = 'EJScreen environmental and socioeconomic indicators data',
+                        extratable_list_of_sections = list(
+                          `Breakdown by Race/Ethnicity` = names_d_subgroups,
+                          `Language Spoken at Home` = names_d_language,
+                          `Language in Limited English Speaking Households` = names_d_languageli,
+                          `Breakdown by Sex` = c('pctmale','pctfemale'),
+                          `Health` = names_health, 
+                          `Community` = names_community[!(names_community %in% c( "pctmale", "pctfemale", "pctownedunits_dupe"))],
+                          'Poverty' = names_d_extra, # pctpoor
+                          `Site counts and distance` = names_e_other
+                        ),
+                        extratable_hide_missing_rows_for = c(names_d_language, names_health)
+                        ) {
   
   if (missing(submitted_upload_method)) {
     if (all(is.na(ejamitout$results_bysite$radius.miles)) &&  # radius from ejamit() is NA in FIPS case, not zero 
@@ -134,8 +166,16 @@ ejam2report <- function(ejamitout = testoutput_ejamit_10pts_1miles,
       totalpop = popstr,
       locationstr = locationstr,
       include_ejindexes = include_ejindexes,
-      in_shiny = FALSE,
-      filename = temp_comm_report_or_null # passing NULL should make it return the html object
+      
+      filename = temp_comm_report_or_null, # passing NULL should make it return the html object
+      show_ratios_in_report = show_ratios_in_report,
+      
+      extratable_title = extratable_title,
+      extratable_list_of_sections = extratable_list_of_sections,
+      extratable_show_ratios_in_report = extratable_show_ratios_in_report,
+      extratable_hide_missing_rows_for = extratable_hide_missing_rows_for,
+      
+      in_shiny = FALSE
     )
     cat(x, file = temp_comm_report)
     if (launch_browser) {

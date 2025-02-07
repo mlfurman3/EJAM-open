@@ -48,7 +48,8 @@ test_that('error for invalid syntax',{
 
 test_that('latlon as string vectors are ok', {
   # can't handle it, generic condition length error
-  expect_no_condition(
-    state_from_latlon(lat = c("33", "40"), lon = c("-90", "-110"))
-    )
+  expect_no_condition({
+    x = state_from_latlon(lat = c("33", "40"), lon = c("-90", "-110"))
+    })
+  expect_equal( x$ST , c("MS", "UT") )
 })

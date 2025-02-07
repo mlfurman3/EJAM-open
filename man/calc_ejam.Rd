@@ -22,7 +22,7 @@ data.frame of calculated variables one row per bg row
 DRAFT utility to use formulas provided as text, to calculate indicators
 }
 \details{
-may be used by doaggregate_custom()
+may be used by custom_doaggregate()
 }
 \examples{
 

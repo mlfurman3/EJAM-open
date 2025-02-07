@@ -24,10 +24,15 @@
 #'   
 #' @param fips vector of FIPS codes if relevant, to use instead of lat lon,
 #'   Passed to [url_ejscreen_report()] as areaid
+#'   Note that nearly half of all county fips codes are impossible to distinguish from 
+#'   5-digit zipcodes because the same numbers are used for both purposes.
+#'   
 #' @param wherestr optional because inferred from fips if provided.
 #'   Passed to [url_ejscreenmap()] and can be name of city, county, state like
 #'   from fips2name(201090), or "new rochelle, ny" or "AK"
-#'   or even a zip code, but NOT a fips code!
+#'   or even a zip code, but NOT a fips code! (for FIPS, use the fips parameter instead).
+#'   Note that nearly half of all county fips codes are impossible to distinguish from 
+#'   5-digit zipcodes because the same numbers are used for both purposes.
 #' @param namestr passed to [url_ejscreen_report()]
 #' 
 #' @param shapefile not implemented

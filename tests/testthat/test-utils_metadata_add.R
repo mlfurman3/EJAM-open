@@ -11,8 +11,8 @@ test_that("metadata_check default works", {
 test_that("metadata_check format OK and finds some results", {
   expect_no_error({
     x <- metadata_check("EJAM")
+    # Error in get(x) : object 'ejamdata_version' not found
   })
-  
   expect_true(
     "usastats" %in% x$item
   )
@@ -47,9 +47,7 @@ test_that("metadata_check(loadifnotloaded = T) works", {
 
 test_that("should handles non-existant package", {
   expect_no_error(
-    
     metadata_check(packages = "NOPACKAGEEXISTSOFTHISNAME", loadifnotloaded = TRUE)
-    
   )
 })
 

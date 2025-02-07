@@ -16,7 +16,7 @@ resource provided by the United States Environmental Protection Agency
 environmental information aggregated within and across hundreds or
 thousands of places, all at the same time.
 
-### What is EJAM?
+### What Can You Do with EJAM?
 
 - [What is EJAM?](https://usepa.github.io/EJAM/articles/0_whatis.html)
 

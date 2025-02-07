@@ -1,3 +1,8 @@
+# "Shapefiles" consist of several files with the same basename that reside in the same directory, only one of them having extension .shp.
+#
+# sf::read_sf() is an alias for sf::st_read(), with some modified default arguments.
+#   read_sf returns an sf-tibble rather than an sf-data.frame.
+#   read_sf is quiet by default/does not print information about the data source.
 
 ### list of functions here ####
 # see source code Outline for list
@@ -114,8 +119,9 @@ shapefile_from_any <- function(path = NULL, cleanit = TRUE, crs = 4269, layer = 
     if (file.exists(path)) {
       
       if (!(tolower(tools::file_ext(path)) %in% c("shp", "gdb", "zip", "geojson", "json"))) {
+        if (!dir.exists(path)) {
         warning("If single path provided, it should be a .shp, .gdb, .zip, .geojson, .json, or .kml file, or a folder")
-      } # but maybe st_read() will figure it out anyway?
+      }} # but maybe st_read() will figure it out anyway?
       
       # true if like testdata/shapes/portland.gdb 
       if (tolower(tools::file_ext(path)) == "gdb") {

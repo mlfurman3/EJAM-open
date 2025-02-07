@@ -299,10 +299,7 @@ update_pkgdown = function(
   # remember to push so gh actions publish it ####
   if (TRUE) {
     cat( '\n\n NOW COMMIT AND PUSH THE NEW FILES \n\n')
-    cat("Try this to see github action happen: \n
-browseURL('https://github.com/USEPA/EJAM/actions/') # to see automatic deployment happen
-
-")
+    cat("Github actions in the repo will deploy from the docs folder to gh pages: \n")
   }
   ################################################################## #
   # how to build single file source pkg ####

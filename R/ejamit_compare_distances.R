@@ -287,7 +287,7 @@ distance_trends <- function(results_bydistance,
   }
   # REPORT STRONGEST TREND
   # fit line to points and report which has the most negative slope, e.g.
-  slopes <- coef(lm(as.matrix(results_bydistance) ~ radii ))[2, ]
+  slopes <- stats::coef(stats::lm(as.matrix(results_bydistance) ~ radii ))[2, ]
   topn <- head(sort(slopes), n)
   topn <- fixcolnames(names(topn), "r", "long")
   cat("\nIndicators that increase the most as you get closer: \n\n")

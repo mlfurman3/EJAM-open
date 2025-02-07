@@ -5,6 +5,9 @@
 # - points dataset objects (like testpoints_10 saved as and installed from source file "EJAM/data/testpoints_10.rda")
 # - other dataset objects (like testoutput_ejamit_1000pts_1miles)
 # - documentation files for all those (like source file saved as "EJAM/R/data_testpoints_10.R", readable via ?testpoints_10 in RStudio)
+
+devtools::load_all()  # ensures the latest source version of each function gets used
+
 if (!exists("metadata_add")) {
   metadata_add = EJAM:::metadata_add # devtools::load_all() would have fixed that though
 }
@@ -32,16 +35,18 @@ recreating_getblocksnearby    <- FALSE  # eg if block data changed, or if recrea
 resaving_getblocksnearby_rda  <- FALSE
 resaving_getblocksnearby_helpdocs <- FALSE
 
-recreating_doaggregate_output <- FALSE # eg if other indicators added to outputs
+recreating_doaggregate_output <- TRUE # eg if other indicators added to outputs
 if (recreating_doaggregate_output) {recreating_getblocksnearby <- TRUE} # needed
-resaving_doaggregate_rda      <- FALSE
-resaving_doaggregate_helpdocs <- FALSE # just in case
-resaving_doaggregate_excel    <- FALSE # 
+
+resaving_doaggregate_rda      <- TRUE
+resaving_doaggregate_helpdocs <- TRUE # just in case
+resaving_doaggregate_excel    <- FALSE # sort of obsolete given resaving_ejamit2excel
 
 recreating_ejamit_output      <- TRUE # eg if format or list of indicators changes
 resaving_ejamit_rda           <- TRUE
 resaving_ejamit_helpdocs      <- TRUE
-resaving_ejamit_excel         <- TRUE
+resaving_ejamit2excel         <- TRUE
+resaving_ejamit2report        <- FALSE
 
 redoing_ejscreenit_10_for_ejam_to_have  <- FALSE
 # and  there are these:  5, 50, 500  ##
@@ -403,7 +408,10 @@ for (n in nvalues) {
       # testoutput_ejamit_100pts_1miles
       # testoutput_ejamit_1000pts_1miles
       assign(out_varname_ejamit, out_data_ejamit)
+    } else {
+      # already exists presumably. use get(out_varname_ejamit) to access the object
     }
+    
     ## save as DATA IN PACKAGE ####
     if (resaving_ejamit_rda) {
       text_to_do <- paste0(
@@ -414,26 +422,40 @@ for (n in nvalues) {
       text_to_do = paste0("usethis::use_data(", out_varname_ejamit, ", overwrite=TRUE)")
       eval(parse(text = text_to_do))                                             ############# #
     }
+    
     # save as DOCUMENTATION ####
-    
-
-    
     if (resaving_ejamit_helpdocs) {
           dataset_documenter(out_varname_ejamit,
                              title = "test output of ejamit()",
                              details = paste0("This is the output of ejamit(", testpoints_name,", radius = ", myrad,", include_ejindexes = TRUE)"),
                              seealso = paste0("[doaggregate()] [ejamit()] [", out_varname_doagg,"] and [", testpoints_name,"]")
                              )
-        }
+    }
     
-    # save as EXCEL ####
-    if (resaving_ejamit_excel) {
-      junk = EJAM:::table_xls_from_ejam(
-        out_data_ejamit, interactive_console = FALSE, launchexcel = FALSE, overwrite = TRUE,
-        in.analysis_title = "Example of outputs of ejamit() being formatted and saved using table_xls_from_ejam()",
+    # save as EXCEL via ejamit2excel() ####
+    if (resaving_ejamit2excel) {
+      fname <- paste0("testoutput_ejamit2excel_", n, "pts_", myrad, "miles")
+      junk <- ejam2excel(
+        get(out_varname_ejamit), 
+        in.analysis_title = "Example of outputs of ejamit() being formatted and saved using ejam2excel()",
         radius_or_buffer_in_miles = myrad,
         buffer_desc = paste0("Within ", myrad, " miles"),
-        fname = paste0("./inst/testdata/examples_of_output/", out_varname_ejamit, ".xlsx")
+        fname = paste0("./inst/testdata/examples_of_output/", fname, ".xlsx"),
+        save_now = TRUE,
+        launchexcel = FALSE, 
+        interactive_console = FALSE
+      )
+}
+    
+    # save as HTML Report via ejamit2report() ####
+    if (resaving_ejamit2report ) {
+      fname <- paste0("testoutput_ejamit2report_", n, "pts_", myrad, "miles")
+      url_html <- ejam2report(
+        get(out_varname_ejamit),
+        analysis_title = "Sample Summary Report", 
+        launch_browser = F
+        )
+      file.copy(url_html, paste0("./inst/testdata/examples_of_output/", fname, ".html")
       )
     }
   }

@@ -66,10 +66,10 @@ using formulas that have to be specified.}
 
 \item{calculate_ratios}{whether to calculate and return ratio of each indicator to its US and State overall mean}
 
-\item{extra_demog}{if should include more indicators from EJScreen v2.2 report,
-on language, more age groups, gender, percent with disability, poverty, etc.}
+\item{extra_demog}{if should include extra indicators from EJScreen report,
+on language, more age groups, sex, percent with disability, poverty, etc.}
 
-\item{need_proximityscore}{whether to calculate proximity scores}
+\item{need_proximityscore}{whether to calculate proximity scores (may not be implemented yet)}
 
 \item{infer_sitepoints}{set to TRUE to try to infer the lat,lon of each site around which the blocks in sites2blocks were found.
 lat,lon of each site will be approximated as average of nearby blocks, although a more accurate slower way would
@@ -84,7 +84,7 @@ Set to FALSE to prevent long output showing in console in RStudio when in intera
 
 \item{testing}{used while testing this function}
 
-\item{...}{more to pass to another function? Not used currently.}
+\item{...}{more to pass to another function (may not be implemented yet)}
 }
 \value{
 list with named elements:
@@ -98,6 +98,8 @@ indicator across everyone within each demographic group.
 \item \strong{longnames}  descriptive long names for the indicators in the above outputs
 \item \strong{count_of_blocks_near_multiple_sites}  additional detail
 }
+
+Also see outputs of \code{\link[=ejamit]{ejamit()}} which are similar but provide additional info.
 }
 \description{
 Used by ejamit() and the shiny app to summarize blockgroups scores at each site and overall.
@@ -176,6 +178,10 @@ or else an approach that uses higher resolution estimates of residential locatio
 the Decennial census blocks can provide, such as a dasymetric map approach.
 }
 
+\examples{
+structure.of.output.list(testoutput_doaggregate_10pts_1miles)
+
+}
 \seealso{
 \link{ejamit}   \code{\link[=getblocksnearby]{getblocksnearby()}}
 }

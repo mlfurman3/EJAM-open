@@ -9,6 +9,7 @@
 #'   or returns just the full path/file name of where it was saved if save_now = TRUE
 #' 
 #' @param ejamitout output of [ejamit()] 
+#' @param mapadd Logical option for including a map of the points
 #' @param fname optional name or full path and name of file to save locally, like "out.xlsx" 
 #' @param save_now optional logical, whether to save as a .xlsx file locally or just return workbook object
 #'   that can later be written to .xlsx file using [openxlsx::saveWorkbook()]
@@ -26,6 +27,7 @@
 #' @param hyperlink_colnames optional names of columns with URLs
 #' @param site_method site selection method, such as NAICS, FRS, SHP, latlon,
 #'   optional site method parameter used to create a more specific title with create_filename
+#' @param mapadd logical option for including a map of the points 
 #' @param ... optional additional parameters passed to [table_xls_format()], such as 
 #'   heatmap_colnames, heatmap_cuts, heatmap_colors, etc.
 #' @examples
@@ -58,9 +60,15 @@ ejam2excel <- function(ejamitout,
                        # radius_or_buffer_description =   "Distance from each site (radius of each circular buffer around a point)",
                        hyperlink_colnames = c("EJScreen Report", "EJScreen Map", "ECHO report"),
                        site_method = "",
+                       mapadd = FALSE,
                        ...
 ) {
 
+  if(mapadd == T){
+    report_map <- ejam2map(ejamitout, radius=radius_or_buffer_in_miles)
+  } else {
+    report_map <- NULL
+  }
   x = table_xls_from_ejam(
     ejamitout = ejamitout,
     fname = fname,
@@ -77,6 +85,8 @@ ejam2excel <- function(ejamitout,
     radius_or_buffer_description = radius_or_buffer_description,
     hyperlink_colnames = hyperlink_colnames,
     site_method = site_method,
+    mapadd = mapadd,
+    report_map = report_map,
     ...
   )
   invisible(x)

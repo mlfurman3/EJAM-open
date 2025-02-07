@@ -23,12 +23,12 @@ one of names_d like "Demog.Index.Supp"}
 
 \item{myids}{optional vector of ejam_uniq_id values}
 
-\item{show.lowess}{whether to show curve fitted via lines(lowess(x,y))
+\item{show.lowess}{whether to show curve fitted via graphics::lines(stats::lowess(x,y))
 using \code{\link[stats:lowess]{stats::lowess()}}}
 
-\item{show.lm}{whether to show straight line fitted via \code{\link[=lm]{lm()}}}
+\item{show.lm}{whether to show straight line fitted via \code{\link[stats:lm]{stats::lm()}}}
 
-\item{show.line}{whether to show straight line fitted via coef(line(x,y))
+\item{show.line}{whether to show straight line fitted via stats::coef(line(x,y))
 using \code{\link[stats:coef]{stats::coef()}} and \code{\link[stats:line]{stats::line()}}}
 
 \item{...}{passed to \code{\link[=plot]{plot()}}}

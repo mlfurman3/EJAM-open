@@ -6,21 +6,16 @@
 \usage{
 dataload_from_local(
   varnames = .arrow_ds_names[1:3],
-  ext = c(".arrow", ".rda")[1],
-  fun = c("arrow::read_ipc_file", "load")[1],
   envir = globalenv(),
   folder_local_source = NULL,
   justchecking = FALSE,
   testing = FALSE,
-  silent = FALSE
+  silent = FALSE,
+  return_data_table = TRUE
 )
 }
 \arguments{
 \item{varnames}{use defaults, or vector of names like "bgej" or use "all" to get all available}
-
-\item{ext}{use defaults}
-
-\item{fun}{use defaults}
 
 \item{envir}{use defaults. see \code{\link[=dataload_from_pins]{dataload_from_pins()}}}
 
@@ -31,6 +26,8 @@ dataload_from_local(
 \item{testing}{use defaults}
 
 \item{silent}{set to TRUE to stop cat() printing to console like when running tests}
+
+\item{return_data_table}{whether the \code{\link[=read_ipc_file]{read_ipc_file()}} should return a data.table (T, the default), or arrow (F)}
 }
 \value{
 vector of paths to files (as derived from varnames) that were

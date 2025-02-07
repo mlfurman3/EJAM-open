@@ -28,6 +28,8 @@ table_xls_from_ejam <- function(ejamitout,
                                 # radius_or_buffer_description =   "Distance from each site (radius of each circular buffer around a point)",
                                 hyperlink_colnames = c("EJScreen Report", "EJScreen Map", "ECHO report"),
                                 site_method = "",
+                                mapadd, 
+                                report_map,
                                 ...
 ) {
   
@@ -116,6 +118,8 @@ table_xls_from_ejam <- function(ejamitout,
     # heatmap_cuts=c(80, 90, 95), # can use defaults
     # heatmap_colors=c('yellow', 'orange', 'red') # can use defaults
     ## optional, shiny-specific arguments to go in 'Plot' and 'Notes' sheets
+    mapadd = mapadd,
+    report_map = report_map,
     summary_plot   = react.v1_summary_plot, # NULL is fine
     analysis_title = in.analysis_title,
     ok2plot = ok2plot,

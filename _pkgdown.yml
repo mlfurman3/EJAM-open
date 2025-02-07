@@ -43,6 +43,7 @@ articles:
   - '`2_quickstart`'
   - '`3_analyzing`'
   - '`4_advanced`'
+  - '`zipcodes`'
 reference:
 - title: "Key Functions for Starting an Analysis"
   desc: "Starting the Analysis"
@@ -208,7 +209,12 @@ reference:
   - getblocksnearby_from_fips
   - get_blockpoints_in_shape
   - getblocks_diagnostics
+  - getpointsnearby
+  - getfrsnearby
+  - proxistat
   - indexblocks
+  - indexpoints
+  - indexfrs
   - convert_units
   - fips2pop
 - title: "Calculating and Aggregating"
@@ -395,6 +401,10 @@ reference:
   - metadata4pins
   - datawrite_to_pins
   - datawrite_to_local
+  - download_latest_arrow_data
+  - getpointsnearbyviaQuadTree
+  - plot_st_v_us
+  - proxistat_via_getblocks
   - colcounter
   - ejscreen_vs
   - ejscreen_vs_ejam_1var
@@ -441,8 +451,6 @@ reference:
   - popup_from_df
   - is.island
   - radius_inferred
-  - getfrsnearby
-  - proxistat2
   - proximity.score.in.miles
   - fips_counties_from_countyname
   - fips_place_from_placename

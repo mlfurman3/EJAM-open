@@ -7,11 +7,22 @@
 ejam2report(
   ejamitout = testoutput_ejamit_10pts_1miles,
   sitenumber = NULL,
-  analysis_title = "EJAM Report",
+  analysis_title = "Summary of EJ Analysis",
   submitted_upload_method = c("latlon", "SHP", "FIPS")[1],
   data_up_shp = NA,
   return_html = FALSE,
-  launch_browser = TRUE
+  launch_browser = TRUE,
+  show_ratios_in_report = TRUE,
+  extratable_show_ratios_in_report = TRUE,
+  extratable_title = "EJScreen environmental and socioeconomic indicators data",
+  extratable_list_of_sections = list(`Breakdown by Race/Ethnicity` = names_d_subgroups,
+    `Language Spoken at Home` = names_d_language,
+    `Language in Limited English Speaking Households` = names_d_languageli,
+    `Breakdown by Sex` = c("pctmale", "pctfemale"), Health = names_health, Community =
+    names_community[!(names_community \%in\% c("pctmale", "pctfemale",
+    "pctownedunits_dupe"))], Poverty = names_d_extra, `Site counts and distance` =
+    names_e_other),
+  extratable_hide_missing_rows_for = c(names_d_language, names_health)
 )
 }
 \arguments{
@@ -31,6 +42,22 @@ then the report is about \code{ejamout$results_overall}}
 \item{return_html}{set TRUE to have function return HTML object instead of URL of local file}
 
 \item{launch_browser}{set TRUE to have it launch browser and show report.}
+
+\item{show_ratios_in_report}{logical, whether to add columns with ratios to US and State overall values, in main table of envt/demog. info.}
+
+\item{extratable_show_ratios_in_report}{logical, whether to add columns with ratios to US and State overall values, in extra table of demog. subgroups, etc.}
+
+\item{extratable_title}{Text of overall title of report table, in extra table of demog. subgroups, etc.}
+
+\item{extratable_list_of_sections}{This defines what extra indicators are shown.
+It is a named list of vectors,
+where each name is text phrase that is title of a section of the table,
+and each vector is the vector of colnames of output_df that are indicators
+to show in that section, in extra table of demog. subgroups, etc.}
+
+\item{extratable_hide_missing_rows_for}{only for the indicators named in this vector,
+leave out rows in table where raw value is NA,
+as with many of names_d_language, in extra table of demog. subgroups, etc.' #'}
 }
 \value{
 URL of temp html file or object depending on return_html,
@@ -43,6 +70,7 @@ EJScreen Community Report
 \details{
 This relies on \code{\link[=build_community_report]{build_community_report()}} as used in web app
 for viewing report on 1 site from a list of sites.
+You can customize the report somewhat by using parameters like extratable_list_of_sections
 }
 \examples{
 #out <- ejamit(testpoints_10, radius = 3, include_ejindexes = T)

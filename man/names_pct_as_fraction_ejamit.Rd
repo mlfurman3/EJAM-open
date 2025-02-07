@@ -5,7 +5,7 @@
 \alias{names_pct_as_fraction_ejamit}
 \title{which indicators are percentages stored as 0-1 not 0-100, in blockgroupstats}
 \format{
-An object of class \code{character} of length 73.
+An object of class \code{character} of length 74.
 }
 \usage{
 names_pct_as_fraction_ejamit

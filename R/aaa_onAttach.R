@@ -1,8 +1,8 @@
 
 #' Set up EJAM (do slow initialization steps when package is attached)
-#' 
+#'
 #' Download datasets, load to memory, index block locations
-#' 
+#'
 #' @details This uses [dataload_from_pins()] and [indexblocks()]
 #' 
 #' This function `.onAttach()` gets run when the package EJAM is attached, 
@@ -13,14 +13,14 @@
 #' This code would not get run if a server ran app.R as a regular shiny app (because of _disable_autoload.R ?)
 #' and just used dataload or source to read the /R/*.R source files
 #' rather than loading and attaching the EJAM package. see app.R   ***
-#' Note this duplicates some code in global.R, 
+#' Note this duplicates some code in global.R,
 #' see source code here to adjust settings.
-#' 
+#'
 #' @param libname na
 #' @param pkgname na
-#' 
+#'
 #' @noRd
-#' 
+#'
 .onAttach <- function(libname, pkgname) {
 
   # These instead could be set in the golem-config.yml file
@@ -105,15 +105,15 @@
     ## "https://dmap-data-commons-oa.s3.amazonaws.com/EJAM/blockid2fips.rda"
     ######################### # 
   }
-  
+
   # create index of all US block points, to enable fast queries ####
-  
+
   if (asap_index) {
-    
-    # this duplicates code from  global.R 
-    
-    if (length(try(find.package("EJAM", quiet = T))) == 1) { # if it has been installed. but that function has to have already been added to package namespace once 
-      
+
+    # this duplicates code from  global.R
+
+    if (length(try(find.package("EJAM", quiet = T))) == 1) { # if it has been installed. but that function has to have already been added to package namespace once
+
       indexblocks()   # EJAM function works only AFTER shiny does load all/source .R files or package attached
     }
   }
@@ -126,14 +126,14 @@
   ##  And it slightly delays the shiny app launch.
   
   if (asap_bg) {
-    
-    # this duplicates code from  global.R 
-    
+
+    # this duplicates code from  global.R
+
     if (length(try(find.package("EJAM", quiet = T))) == 1) { # The first time you try to install the package, it will not have access to EJAM :: etc. !
-      
+
       dataload_from_package() # EJAM function works only AFTER shiny does load all/source .R files or package attached
     }
-    
+
     # load BLOCKGROUP (not block) data (EJScreen data), etc. from package
     # see ?dataload_from_package()
     # This loads some key data, while others get lazy loaded if/when needed.

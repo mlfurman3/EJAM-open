@@ -60,13 +60,7 @@ indexblocks()
 
 This document is about analysts or coders using the EJAM R package in RStudio. After you [install the EJAM R package](https://usepa.github.io/EJAM/articles/1_installing.html), this document explains how you can run an EJAM analysis and view results right away using R.
 
-## EJAM as a web app
-
-This document is not about using EJAM as a web application.
-
-If you just want to use a public web app to do this type of analysis, use the EJScreen Multisite Tool that is part of the [EJScreen website](https://www.epa.gov/ejscreen) and is based on EJAM's tools.
-
-If you did [install the EJAM R package](https://usepa.github.io/EJAM/articles/1_installing.html), but you do not want to use R functions, and you just want to use EJAM as a local web app launched from R/RStudio, see the instructions for [using EJAM as a local web app](https://usepa.github.io/EJAM/articles/0_webapp.html). To see a User Guide for (the public version of) the web application itself, launch the web app and click the "Help" link at the upper right of that page.
+This document is not about [using EJAM as a web application](https://usepa.github.io/EJAM/articles/0_webapp.html), but you can launch a local web app after installing the EJAM R package.
 
 ## Load EJAM
 
@@ -161,7 +155,7 @@ y <- ejam2report(out, sitenumber = 1, analysis_title = "Site #1")
 
 ![Summary table of environmental and demographic indicators as raw value, average and percentile (in State and in US overall)](images/image-report_top_example.png){width="100%"}
 
-![Summary table of EJ Indexes, race-ethnicity subgroups, gender, and language indicators](images/image-report_EJ_table_example.png){width="100%"} ![US map showing analyzed points](images/image-map_example.png){width="100%"}
+![Summary table of EJ Indexes, race-ethnicity subgroups, sex, and language indicators](images/image-report_EJ_table_example.png){width="100%"} ![US map showing analyzed points](images/image-map_example.png){width="100%"}
 
 ![Barplot comparing demographic indicators as ratios to US average](images/image-barplot_example.png){width="100%"}
 
@@ -274,10 +268,9 @@ mapfast(testpoints_n(300, ST = c('LA','TX'), weighting = 'bg'), radius = 0.1)
 ```
 
 
-
 # Documentation of Functions and Data
 
-- [README on GitHub](https://github.com/USEPA/EJAM/tree/main?tab=readme-ov-file#readme){.uri target="_blank" rel="noreferrer noopener"}
+- [README](../index.html){.uri target="_blank" rel="noreferrer noopener"}
 - [Function Reference Document](../reference/index.html){.uri target="_blank" rel="noreferrer noopener"}
 - In RStudio, see `?EJAM`
 
@@ -287,7 +280,4 @@ mapfast(testpoints_n(300, ST = c('LA','TX'), weighting = 'bg'), radius = 0.1)
 help("EJAM", package='EJAM')
 
 ?ejamit()
-
-# If vignettes were including in one's installation (but often are not), then this would work as well:
-browseVignettes(package = "EJAM")
 ```

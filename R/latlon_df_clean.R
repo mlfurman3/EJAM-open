@@ -11,7 +11,7 @@
 #' @seealso Used by [latlon_from_anything()]. Uses [latlon_infer()] [latlon_is.valid()] [latlon_as.numeric()]
 #' @return Returns the same data.frame but with relevant colnames changed to lat and lon,
 #'    and invalid lat or lon values cleaned up if possible or else replaced with NA,
-#'    and columns "valid" and "invalid_msg"
+#'    and optional columns "valid" and "invalid_msg"
 #'
 #' @examples #  x <- latlon_df_clean(x)
 #'  latlon_df_clean(testpoints_bad, set_invalid_to_na = F, invalid_msg_table = T)
@@ -40,10 +40,11 @@ latlon_df_clean <- function(df, invalid_msg_table = FALSE, set_invalid_to_na = T
   validinfo <- latlon_is.valid(lat = df$lat, lon = df$lon, invalid_msg_table = invalid_msg_table)
   if (!invalid_msg_table) {
     ok = validinfo
-    df <- data.table(df,valid = ok, invalid_msg = ifelse(ok, "", "latlon invalid"))
+    #### actually, we should NOT add those columns since invalid_msg_table is FALSE
+    # df <- data.table(df, valid = ok, invalid_msg = ifelse(ok, "", "latlon invalid"))
   } else {
     ok <- validinfo$valid
-    df <- data.table(df, valid = ok,invalid_msg = invalid_msg_table)
+    df <- data.table(df, valid = ok, invalid_msg = validinfo$invalid_msg)
     
   }
   if (any(!ok) & set_invalid_to_na) {

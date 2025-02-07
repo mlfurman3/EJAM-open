@@ -89,7 +89,7 @@ wtscols = varinfo(wtdmeancols, "denominator")$denominator
 #   rep("pop", length(names_d_subgroups_alone)),
 #   rep("pop", length(names_d_subgroups_nh)),
 #   
-#   rep("pop", 4), # ages and gender
+#   rep("pop", 4), # ages and sex
 #   
 #   "povknownratio",
 #   "age25up",

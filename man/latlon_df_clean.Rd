@@ -16,7 +16,7 @@ latlon_df_clean(df, invalid_msg_table = FALSE, set_invalid_to_na = TRUE)
 \value{
 Returns the same data.frame but with relevant colnames changed to lat and lon,
 and invalid lat or lon values cleaned up if possible or else replaced with NA,
-and columns "valid" and "invalid_msg"
+and optional columns "valid" and "invalid_msg"
 }
 \description{
 Utility to identify lat and lon columns, renaming and cleaning them up.

@@ -16,8 +16,8 @@ set_state_inspector(function() {
 })
 ############################### #
 # internet available? ####
-offline_warning("NO INTERNET CONNECTION AVAILABLE - SOME TESTS MAY FAIL WITHOUT CLEAR EXPLANATION")
-offline_cat("\n\nNO INTERNET CONNECTION AVAILABLE - SOME TESTS MAY FAIL WITHOUT CLEAR EXPLANATION\n\n")
+EJAM:::offline_warning("NO INTERNET CONNECTION AVAILABLE - SOME TESTS MAY FAIL WITHOUT CLEAR EXPLANATION")
+EJAM:::offline_cat("\n\nNO INTERNET CONNECTION AVAILABLE - SOME TESTS MAY FAIL WITHOUT CLEAR EXPLANATION\n\n")
 # skip_if_offline()
 
 ################################## #
@@ -150,6 +150,13 @@ if (!exists("out_api", envir = globalenv())) { # should be there if test_interac
     # x <- try(ejscreenRESTbroker(lon = testpoints_5$lon[1], lat = testpoints_5$lat[1], radius = testradius))
     # missing_api_results <- inherits(x, "try-error")
   })
+}
+
+#Source and library calls
+
+if (!exists("geocode")) {
+  library(AOI)
+  cat("MUST LOAD AOI PKG FOR tests in test-address_xyz to work \n\n")
 }
 ############################### #
 # >>> cleanup after testing?? #### 

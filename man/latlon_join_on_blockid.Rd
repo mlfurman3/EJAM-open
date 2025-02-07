@@ -2,18 +2,21 @@
 % Please edit documentation in R/latlon_join_on_blockid.R
 \name{latlon_join_on_blockid}
 \alias{latlon_join_on_blockid}
-\title{get lat,lon of each block internal point via blockid}
+\title{utility to add lat lon columns to data.table by reference, joining on blockid}
 \usage{
 latlon_join_on_blockid(s2b)
 }
 \arguments{
-\item{s2b}{like \link{testoutput_getblocksnearby_10pts_1miles}, output of \code{\link[=getblocksnearby]{getblocksnearby()}}}
+\item{s2b}{data.table like \link{testoutput_getblocksnearby_10pts_1miles},
+output of \code{\link[=getblocksnearby]{getblocksnearby()}},
+with column called blockid}
 }
 \value{
 returns the input data.table but with lat,lon columns added as block coordinates
 }
 \description{
-get expanded version of sites2blocks data.table, with new lat,lon columns
+get expanded version of data.table, such as sites2blocks,
+with new lat,lon columns
 }
 \examples{
  s2b = copy(testoutput_getblocksnearby_10pts_1miles)

@@ -114,6 +114,11 @@ test_that("fips_valid() works but is slow", {
       TRUE, TRUE
     )
   )
+  
+  expect_identical(
+    fips_valid(1:5),
+    c(TRUE, TRUE, FALSE, TRUE,TRUE)
+  )
 }
 )
 #################################################################### #
@@ -285,7 +290,8 @@ test_that("fipstype() works", {
   casex = vector()
   testx = vector()
   truex = vector()
-  
+  realbgs    = blockgroupstats$bgfips
+  realtracts = substr(blockgroupstats$bgfips,1,11)
   testx[1] = "12345678901";  casex[1]  <- "test_11_char_invalid"; truex[1] <- NA
   testx[2] =  12345678901;   casex[2]  <- 'test_11_num_invalid';  truex[2] <- NA
   
@@ -332,7 +338,7 @@ test_that("fipstype() works", {
                  "1234567890",   # 10  like a tract MISSING LEAD ZERO
                  
                  test_tract_good, # 11 digit TRACT INCLUDES LEAD 0
-                 test_bg_missing0, # 11 digit BLOCKGROUP MISSING LEAD 0
+                 #test_bg_missing0, # 11 digit BLOCKGROUP MISSING LEAD 0
                  
                  # "12345678901",  # 11 NOT A REAL FIPS AND  AMBIGUOUS -- SHOULD CHECK ACTUAL FIPS VALIDITY
                  "123456789012", # 12 bg
@@ -391,6 +397,7 @@ test_that("fipstype() works", {
     expect_identical(fipstype(""), NA_character_)
     expect_identical(fipstype(99), "state")
     expect_no_warning(fipstype(99))
+    expect_identical(fipstype(1:5), c("state","state","state","state","state"))
   })
 })
 #################################################################### #
@@ -615,37 +622,37 @@ test_that("name2fips() works on city/town/cdp", {
 test_that("fips_from_name aka name2fips() works on state or county", {
   junk = capture_output({
     
-  suppressWarnings({
-    expect_no_error({
-      x = name2fips(c("delaware", "NY"))
+    suppressWarnings({
+      expect_no_error({
+        x = name2fips(c("delaware", "NY"))
+      })
+      expect_true({
+        all.equal(x, c("10", "36"))
+      })
+      expect_identical(
+        name2fips("rhode island"), "44"
+      )
+      expect_true(
+        "48201" == name2fips("Harris County, TX")
+      )
+      expect_true(
+        "48201" == name2fips("harris county, tx")
+      )
+      expect_true(
+        all(c("48201", "36") == name2fips(c("harris county, tx", "NY")))
+      )
+      expect_true(
+        13 == name2fips("georgia")
+      )
+      expect_true(
+        is.na(name2fips(NA))
+      )
+      expect_true(
+        identical(name2fips(c("georgia", "Harris County, TX", NA)), c("13", "48201", NA))
+      )
     })
-    expect_true({
-      all.equal(x, c("10", "36"))
-    })
-    expect_identical(
-      name2fips("rhode island"), "44"
-    )
-    expect_true(
-      "48201" == name2fips("Harris County, TX")
-    )
-    expect_true(
-      "48201" == name2fips("harris county, tx")
-    )
-    expect_true(
-      all(c("48201", "36") == name2fips(c("harris county, tx", "NY")))
-    )
-    expect_true(
-      13 == name2fips("georgia")
-    )
-    expect_true(
-      is.na(name2fips(NA))
-    )
-    expect_true(
-      identical(name2fips(c("georgia", "Harris County, TX", NA)), c("13", "48201", NA))
-    )
   })
-  })
-
+  
 })
 #################################################################### #
 # fips_from_table()
@@ -659,7 +666,9 @@ test_that("fips_from_table() works", {
       other = c("ok", "ok", "ok", "not ok, na", "not fips, text")
     )
     expect_no_error({
-      x = fips_from_table(fips_table = mydat)
+      expect_warning({
+        x = fips_from_table(fips_table = mydat)
+      })
     })
     expect_true(
       all(c("10001", "01", "10", NA, NA) == x, na.rm = T)
@@ -733,12 +742,12 @@ test_that("fips_place2placename() works", {
   )
   
   suppressWarnings({
-  expect_true(
-    is.na(fips_place2placename(NA))
-  )
-  
-  expect_true(
-    all(is.na(fips_place2placename(c(NA, NA))   )  )
+    expect_true(
+      is.na(fips_place2placename(NA))
+    )
+    
+    expect_true(
+      all(is.na(fips_place2placename(c(NA, NA))   )  )
     )
   })
 })
@@ -795,6 +804,8 @@ test_that("fips_state_from_state_abbrev() works", {
       )
       expect_warning(fips_state_from_state_abbrev(13))  # probably should warn there is no such fips
       expect_warning(fips_state_from_state_abbrev(c(NA, "RI")))  # maybe should warn
+      expect_identical(fips2state_abbrev(1:5), c("AL", "AK", NA, "AZ", "AR"))
+      
     })
   })
 })
@@ -1183,6 +1194,7 @@ test_that('fips_bgs_in_fips - NO ERROR if invalid text', {
     expect_no_error({val <- fips_bgs_in_fips("36-07")})
     expect_no_error({val <- fips_bgs_in_fips("$1001")})
   })
+  expect_equal(length(val), 0)
 })
 
 #  warnings for invalid strings, no string cleaning (dashes/dots not removed)
@@ -1290,7 +1302,9 @@ test_that("fips2pop ok if multiple types", {
     )
     
   )
-  
+  expect_equal(length(x), 6)
+  expect_true(x[1] > x[2])
+  expect_true(x[5] > x[6])
 })
 ############################### #
 
@@ -1354,6 +1368,10 @@ test_that("fips2state_fips() works", {
     expect_identical(
       fips2state_fips(TESTFIPS), 
       c("02", "02", "10","01" ,"01", "01")
+    )
+    expect_identical(
+      fips2state_fips(1:5), 
+      c("01", "02", "03","04" ,"05")
     )
   })
 })
@@ -1598,7 +1616,7 @@ test_that("fips_lead_zero correct for 1 through 16 digits long", {
         NA, NA, 
         "01234567890",    #TrACT 11
         "012345678901",    # AMBIGUOUS IF NOT REAL FIPS AND 11 digits
-
+        
         "123456789012",             # blockgroup fips 12 digits
         NA, 
         "012345678901234", "123456789012345", # block 15 digits

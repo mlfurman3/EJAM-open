@@ -4,7 +4,12 @@
 \alias{fill_tbl_row_subgroups}
 \title{Write a demographic subgroup indicator to an html table row}
 \usage{
-fill_tbl_row_subgroups(output_df, Rname, longname)
+fill_tbl_row_subgroups(
+  output_df,
+  Rname,
+  longname,
+  extratable_show_ratios_in_report
+)
 }
 \arguments{
 \item{output_df, }{single row of results table from doaggregate - either results_overall or one row of bysite}
@@ -12,6 +17,8 @@ fill_tbl_row_subgroups(output_df, Rname, longname)
 \item{Rname, }{variable name of indicator to pull from results, such as 'pm', 'pctlowinc', 'Demog.Index'}
 
 \item{longname, }{nicer name of indicator to use in table row; can include HTML sub/superscripts}
+
+\item{extratable_show_ratios_in_report}{logical, whether to add columns with ratios to US and State overall values}
 }
 \description{
 Write a demographic subgroup indicator to an html table row

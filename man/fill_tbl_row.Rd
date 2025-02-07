@@ -4,7 +4,7 @@
 \alias{fill_tbl_row}
 \title{Write a demog. or envt. indicator to an html table row}
 \usage{
-fill_tbl_row(output_df, Rname, longname)
+fill_tbl_row(output_df, Rname, longname, show_ratios_in_report)
 }
 \arguments{
 \item{output_df, }{single row of results table from doaggregate -
@@ -15,6 +15,8 @@ such as 'pm', 'pctlowinc', 'Demog.Index'}
 
 \item{longname, }{nicer name of indicator to use in table row;
 can include HTML sub/superscripts}
+
+\item{show_ratios_in_report}{logical, whether to add columns with ratios to US and State overall values}
 }
 \description{
 Write a demog. or envt. indicator to an html table row

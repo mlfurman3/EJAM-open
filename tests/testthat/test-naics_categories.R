@@ -2,10 +2,11 @@
 ## Author: Sara Sokolinski
 
 
-table(nchar(NAICS))
+
 
 # should digits = 1 give a warning? since it's empty
 test_that('the function works for all digits',{
+  table(nchar(NAICS))
   expect_no_warning({val <- naics_categories(digits = 1)})
   expect_no_warning({val <- naics_categories(digits = 2)})
   expect_no_warning({val <- naics_categories(digits = 3)})

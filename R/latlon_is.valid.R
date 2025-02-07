@@ -95,7 +95,7 @@ latlon_is.possible   <- function(lat, lon) {
 #'   that should approximate each of the Island Areas, found in the object [islandareas].
 #' @return vector of TRUE / FALSE values indicating a given lat lon pair
 #'   is approximately in one of the rough bounding boxes that includes the 4 Island Areas.
-#' @seealso   [latlon_is.usa()] [latlon_is.islandareas()] [latlon_is.available()] [latlon_is.possible()]
+#' @seealso  [is.island()] [latlon_is.usa()] [latlon_is.islandareas()] [latlon_is.available()] [latlon_is.possible()]
 #' @examples
 #' \dontrun{
 #' # this would require the testpoints_1000 data from the EJAM package:

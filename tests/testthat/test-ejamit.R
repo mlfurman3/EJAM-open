@@ -103,9 +103,6 @@ test_that("ejamit() returns same exact colnames() in both results_bysite and res
 })
 ########################################################## #
 
-
-
-
 # more tests for ejamit go here
 
 testthat::test_that("ejamit can use fips=fips_counties_from_statename()", {
@@ -116,6 +113,12 @@ testthat::test_that("ejamit can use fips=fips_counties_from_statename()", {
       })
     )
   })
+  expect_equal(names(y), 
+               c("results_overall", "results_bysite", "results_bybg_people", 
+                 "longnames", "count_of_blocks_near_multiple_sites", "results_summarized", 
+                 "formatted", "sitetype"))
+  expect_equal(y$results_bysite$ejam_uniq_id,
+               c("10001" , "10003", "10005") )
 })
 
 # ***
